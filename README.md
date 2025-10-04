@@ -98,6 +98,21 @@ npm run start:dev
 
 The server exposes proxy endpoints under `/api/openai`, `/api/linkup` and `/api/airia`. The frontend helper `src/api/backendClient.ts` shows how to call them.
 
+Note on ports
+--
+By default this project expects the backend (FastAPI/Express) to run on port 8000 and the Vite frontend on port 8080. The Vite dev server is configured to proxy `/api/*` to `http://localhost:8000` so you can call `/api/...` from the browser without CORS issues.
+
+Start both locally (PowerShell):
+
+```powershell
+# In one terminal: start the backend (example for FastAPI)
+uvicorn server.main:app --reload --port 8000
+
+# In another terminal: start the frontend
+
+npm run dev
+```
+
 
 
 # 🧠 NovaMart Query Pack

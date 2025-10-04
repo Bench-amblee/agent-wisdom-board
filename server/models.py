@@ -26,6 +26,7 @@ class FinalReport(BaseModel):
     key_points: List[str]
     agent_metrics: Dict[str, Any]
     recommendations: List[str]
+    agent_perspectives: Dict[str, str] = {}
 
 class BoardDiscussion(BaseModel):
     question: str

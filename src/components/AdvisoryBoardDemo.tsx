@@ -6,11 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, TrendingUp, Headphones, FlaskConical } from "lucide-react";
 import {
   askAdvisoryBoard,
-  analyzeFinalReport,
-  type AnalysisOutput,
   type BoardDiscussion,
 } from "@/api/backendClient";
-import { ActionPlanDashboard } from "@/components/ActionPlanDashboard";
 
 // Agent configuration with icons
 const agentConfig = {
@@ -39,43 +36,38 @@ export function AdvisoryBoardDemo() {
   const [loading, setLoading] = useState(false);
   const [discussion, setDiscussion] = useState<BoardDiscussion | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [analysis, setAnalysis] = useState<AnalysisOutput | null>(null);
-  const [analysisError, setAnalysisError] = useState<string | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-
+  const [currentPhase, setCurrentPhase] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'discussion' | 'summary'>('discussion');
   const handleSubmit = async () => {
     if (!question.trim()) return;
 
     setLoading(true);
     setError(null);
     setDiscussion(null);
-    setAnalysis(null);
-    setAnalysisError(null);
-    setIsAnalyzing(false);
+    setCurrentPhase(null);
+    setActiveTab('discussion');
 
     try {
+      setCurrentPhase("[PHASE 1] Research Phase");
+      await new Promise(r => setTimeout(r, 2000)); // Simulate research time
+      
+      setCurrentPhase("[PHASE 2] Initial Presentations");
+      await new Promise(r => setTimeout(r, 2000)); // Simulate presentation time
+      
+      setCurrentPhase("[PHASE 3] Deliberation Rounds\n   Round 1/1");
+      await new Promise(r => setTimeout(r, 2000)); // Simulate deliberation
+      
+      setCurrentPhase("[PHASE 4] Final Synthesis");
       const result = await askAdvisoryBoard(question, true);
+      
       setDiscussion(result);
+      setCurrentPhase(null);
+      setActiveTab('summary'); // Switch to summary tab when complete
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to get response");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleAnalyzeReport = async () => {
-    if (!discussion?.final_report) return;
-
-    setIsAnalyzing(true);
-    setAnalysisError(null);
-
-    try {
-      const result = await analyzeFinalReport(discussion.final_report);
-      setAnalysis(result);
-    } catch (err) {
-      setAnalysisError(err instanceof Error ? err.message : "Failed to analyze report");
-    } finally {
-      setIsAnalyzing(false);
+      setCurrentPhase(null);
     }
   };
 
@@ -87,6 +79,98 @@ export function AdvisoryBoardDemo() {
           Ask a question and get insights from Sales, Customer Success, and Research directors
         </p>
       </div>
+
+        {/* Agent Status Animation */}
+      {loading && (
+        <div className="mb-6 space-y-4">
+          <div className="text-center text-sm text-muted-foreground">
+            Board members are discussing your question...
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <div className={`p-4 rounded-lg ${agentConfig["Sales Director"].bgColor} ${agentConfig["Sales Director"].borderColor} border relative`}>
+              <div className="flex items-center gap-2 mb-3">
+                <TrendingUp className={`h-5 w-5 ${agentConfig["Sales Director"].color}`} />
+                <span className={`text-sm font-medium ${agentConfig["Sales Director"].color}`}>Sales Director</span>
+              </div>
+              <div className={`flex items-center gap-2 p-2 rounded-lg bg-background/80 border ${agentConfig["Sales Director"].borderColor}`}>
+                <div className="flex items-center gap-1.5">
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Sales Director"].color} opacity-40 animate-bounce [animation-delay:-0.3s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Sales Director"].color} opacity-70 animate-bounce [animation-delay:-0.15s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Sales Director"].color} animate-bounce`}></div>
+                </div>
+                <span className="text-xs text-muted-foreground">Analyzing sales data...</span>
+              </div>
+            </div>
+            <div className={`p-4 rounded-lg ${agentConfig["Customer Success Director"].bgColor} ${agentConfig["Customer Success Director"].borderColor} border`}>
+              <div className="flex items-center gap-2 mb-3">
+                <Headphones className={`h-5 w-5 ${agentConfig["Customer Success Director"].color}`} />
+                <span className={`text-sm font-medium ${agentConfig["Customer Success Director"].color}`}>CS Director</span>
+              </div>
+              <div className={`flex items-center gap-2 p-2 rounded-lg bg-background/80 border ${agentConfig["Customer Success Director"].borderColor}`}>
+                <div className="flex items-center gap-1.5">
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Customer Success Director"].color} opacity-40 animate-bounce [animation-delay:-0.3s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Customer Success Director"].color} opacity-70 animate-bounce [animation-delay:-0.15s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Customer Success Director"].color} animate-bounce`}></div>
+                </div>
+                <span className="text-xs text-muted-foreground">Reviewing feedback...</span>
+              </div>
+            </div>
+            <div className={`p-4 rounded-lg ${agentConfig["Research Director"].bgColor} ${agentConfig["Research Director"].borderColor} border`}>
+              <div className="flex items-center gap-2 mb-3">
+                <FlaskConical className={`h-5 w-5 ${agentConfig["Research Director"].color}`} />
+                <span className={`text-sm font-medium ${agentConfig["Research Director"].color}`}>Research Director</span>
+              </div>
+              <div className={`flex items-center gap-2 p-2 rounded-lg bg-background/80 border ${agentConfig["Research Director"].borderColor}`}>
+                <div className="flex items-center gap-1.5">
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Research Director"].color} opacity-40 animate-bounce [animation-delay:-0.3s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Research Director"].color} opacity-70 animate-bounce [animation-delay:-0.15s]`}></div>
+                  <div className={`w-2.5 h-2.5 rounded-full bg-current ${agentConfig["Research Director"].color} animate-bounce`}></div>
+                </div>
+                <span className="text-xs text-muted-foreground">Processing market data...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}      {/* Phase Indicator */}
+      {currentPhase && (
+        <div className="mb-6 p-4 bg-muted/50 border rounded-lg">
+          <div className="flex items-center gap-3">
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
+            <div>
+              <div className="font-mono text-sm text-muted-foreground">Current Phase:</div>
+              <div className="font-medium whitespace-pre-line">{currentPhase}</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tabs - only show when we have content */}
+      {discussion && (
+        <div className="mb-6">
+          <div className="flex gap-2 border-b">
+            <button
+              onClick={() => setActiveTab('discussion')}
+              className={`px-4 py-2 border-b-2 -mb-px transition-colors ${
+                activeTab === 'discussion'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Discussion
+            </button>
+            <button
+              onClick={() => setActiveTab('summary')}
+              className={`px-4 py-2 border-b-2 -mb-px transition-colors ${
+                activeTab === 'summary'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Final Summary
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Input Section */}
       <Card className="mb-6">
@@ -134,7 +218,8 @@ export function AdvisoryBoardDemo() {
       )}
 
       {/* Results */}
-      {discussion && (
+      {/* Discussion Tab */}
+      {discussion && activeTab === 'discussion' && (
         <div className="space-y-6">
           {/* Summary */}
           <Card>
@@ -199,51 +284,117 @@ export function AdvisoryBoardDemo() {
               </CardContent>
             </Card>
           ))}
+        </div>
+      )}
 
-          {/* Final Report */}
-          {discussion.final_report && (
-            <Card className="border-primary">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  📝 Final Report
-                  <Badge variant="default">Executive Summary</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Summary */}
-                <div>
-                  <h3 className="font-semibold mb-2">Summary</h3>
-                  <p className="text-sm whitespace-pre-wrap">
-                    {discussion.final_report.summary}
+      {/* Final Summary Tab */}
+      {discussion && activeTab === 'summary' && discussion.final_report && (
+        <div className="space-y-6">
+          {/* High Level Overview Card */}
+          <Card className="border-primary">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                🎯 Key Insights
+                <Badge variant="default">Quick Overview</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Sales Director Insight */}
+                <div className={`${agentConfig["Sales Director"].bgColor} ${agentConfig["Sales Director"].borderColor} border rounded-lg p-4`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className={`h-5 w-5 ${agentConfig["Sales Director"].color}`} />
+                    <h4 className={`font-medium ${agentConfig["Sales Director"].color}`}>Sales Perspective</h4>
+                  </div>
+                  <p className="text-sm">
+                    {discussion.final_report?.agent_perspectives["Sales Director"] || "Perspective not available."}
                   </p>
                 </div>
 
-                {/* Key Points */}
-                {discussion.final_report.key_points.length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Key Points</h3>
-                    <ul className="list-disc list-inside space-y-1">
-                      {discussion.final_report.key_points.map((point, idx) => (
-                        <li key={idx} className="text-sm">{point}</li>
-                      ))}
-                    </ul>
+                {/* Customer Success Insight */}
+                <div className={`${agentConfig["Customer Success Director"].bgColor} ${agentConfig["Customer Success Director"].borderColor} border rounded-lg p-4`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Headphones className={`h-5 w-5 ${agentConfig["Customer Success Director"].color}`} />
+                    <h4 className={`font-medium ${agentConfig["Customer Success Director"].color}`}>Customer Success View</h4>
                   </div>
-                )}
+                  <p className="text-sm">
+                    {discussion.final_report?.agent_perspectives["Customer Success Director"] || "Perspective not available."}
+                  </p>
+                </div>
 
-                {/* Agent Metrics */}
-                {Object.keys(discussion.final_report.agent_metrics).length > 0 && (
-                  <div>
-                    <h3 className="font-semibold mb-2">Agent Contributions</h3>
-                    <div className="space-y-2">
-                      {Object.entries(discussion.final_report.agent_metrics).map(([agent, metrics]) => (
-                        <div key={agent} className="border-l-2 border-muted pl-3">
-                          <span className="font-medium text-sm">{agent}:</span>
-                          <p className="text-sm text-muted-foreground">{String(metrics)}</p>
-                        </div>
-                      ))}
-                    </div>
+                {/* Research Director Insight */}
+                <div className={`${agentConfig["Research Director"].bgColor} ${agentConfig["Research Director"].borderColor} border rounded-lg p-4`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FlaskConical className={`h-5 w-5 ${agentConfig["Research Director"].color}`} />
+                    <h4 className={`font-medium ${agentConfig["Research Director"].color}`}>Research Analysis</h4>
                   </div>
-                )}
+                  <p className="text-sm">
+                    {discussion.final_report?.agent_perspectives["Research Director"] || "Perspective not available."}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Detailed Report Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                📝 Detailed Report
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Summary */}
+              <div>
+                <h3 className="font-semibold mb-2">Full Summary</h3>
+                <div 
+                  className="text-sm prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: discussion.final_report.summary
+                      .replace(/^# /gm, '<h1>')
+                      .replace(/^## /gm, '<h2>')
+                      .replace(/^### /gm, '<h3>')
+                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                      .replace(/\n/g, '<br/>')
+                  }}
+                />
+              </div>
+
+              {/* Key Points */}
+              {discussion.final_report.key_points.length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-2">Key Points</h3>
+                  <ul className="list-disc list-inside space-y-1">
+                    {discussion.final_report.key_points.map((point, idx) => (
+                      <li key={idx} className="text-sm prose prose-sm"
+                        dangerouslySetInnerHTML={{
+                          __html: point
+                            .replace(/^# /gm, '<h1>')
+                            .replace(/^## /gm, '<h2>')
+                            .replace(/^### /gm, '<h3>')
+                            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                            .replace(/\n/g, '<br/>')
+                        }}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Agent Metrics */}
+              {Object.keys(discussion.final_report.agent_metrics).length > 0 && (
+                <div>
+                  <h3 className="font-semibold mb-2">Agent Contributions</h3>
+                  <div className="space-y-2">
+                    {Object.entries(discussion.final_report.agent_metrics).map(([agent, metrics]) => (
+                      <div key={agent} className="border-l-2 border-muted pl-3">
+                        <span className="font-medium text-sm">{agent}:</span>
+                        <p className="text-sm text-muted-foreground">{String(metrics)}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
                 {/* Recommendations */}
                 {discussion.final_report.recommendations.length > 0 && (
@@ -251,38 +402,22 @@ export function AdvisoryBoardDemo() {
                     <h3 className="font-semibold mb-2">Recommendations</h3>
                     <ol className="list-decimal list-inside space-y-1">
                       {discussion.final_report.recommendations.map((rec, idx) => (
-                        <li key={idx} className="text-sm">{rec}</li>
+                        <li key={idx} className="text-sm prose prose-sm"
+                          dangerouslySetInnerHTML={{
+                            __html: rec
+                              .replace(/^# /gm, '<h1>')
+                              .replace(/^## /gm, '<h2>')
+                              .replace(/^### /gm, '<h3>')
+                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                              .replace(/\n/g, '<br/>')
+                          }}
+                        />
                       ))}
                     </ol>
                   </div>
                 )}
-
-                <div className="border-t border-muted-foreground/20 pt-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold">Strategic Action Plan</h3>
-                    {!analysis && !isAnalyzing && (
-                      <Button onClick={handleAnalyzeReport} disabled={!discussion.final_report}>
-                        Generate Action Plan
-                      </Button>
-                    )}
-                  </div>
-
-                  {isAnalyzing && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Analyzing report...</span>
-                    </div>
-                  )}
-
-                  {analysisError && (
-                    <p className="text-sm text-destructive">{analysisError}</p>
-                  )}
-
-                  {analysis && <ActionPlanDashboard data={analysis} />}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+            </CardContent>
+          </Card>
         </div>
       )}
     </div>

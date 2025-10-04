@@ -323,31 +323,32 @@ Question: {question}
 Complete Discussion:
 {full_discussion}
 
-Create a comprehensive final report that is easy to read and visually scannable. Write in a professional but conversational tone.
+Create a comprehensive final report that captures the essence of the discussion. Write in a professional but conversational tone.
+
+## Agent Perspectives
+First, synthesize each director's final position into ONE clear, impactful sentence that captures their core argument or perspective:
+
+**Sales Director's Final Position**: [One sentence that captures their ultimate conclusion/recommendation based on their expertise and the full discussion]
+
+**Customer Success Director's Final Position**: [One sentence that captures their ultimate conclusion/recommendation based on their expertise and the full discussion]
+
+**Research Director's Final Position**: [One sentence that captures their ultimate conclusion/recommendation based on their expertise and the full discussion]
 
 ## Executive Summary
-Write 2-3 compelling paragraphs that capture the essence of the discussion. Focus on the key decision points and consensus reached.
+Write 2-3 compelling paragraphs that capture the essence of the discussion. Focus on how the different perspectives came together or diverged.
 
 ## Key Insights
-Provide 5-7 critical insights discovered during the discussion. Each should be:
-- Clear and specific
-- Data-driven when possible
-- Actionable
-
-## What Each Director Brought to the Table
-For each director, summarize their unique contribution:
-
-**Sales Director**: [What they emphasized, key metrics they highlighted, their perspective]
-
-**Customer Success Director**: [What they emphasized, customer insights they shared, their concerns]
-
-**Research Director**: [External insights they provided, market trends they highlighted, their recommendations]
+Extract 3-5 most critical insights that emerged from the discussion. Focus on points where:
+- Multiple directors agreed
+- Important counter-arguments were raised
+- Data and experience aligned
+- Novel solutions emerged
 
 ## Action Items
-Provide 3-5 specific, actionable recommendations. Each should:
+Provide 3-5 specific, actionable recommendations that synthesize the different perspectives. Each should:
 - Be concrete and implementable
 - Have clear business impact
-- Build on the discussion insights
+- Address concerns from all sides
 
 Write this as a flowing, readable document - NOT as JSON. Use markdown formatting for headers and emphasis where appropriate."""
 
@@ -361,10 +362,26 @@ Write this as a flowing, readable document - NOT as JSON. Use markdown formattin
         import re
 
         # Extract sections using regex
+        perspectives_match = re.search(r'## Agent Perspectives\s*(.*?)(?=##|$)', report_text, re.DOTALL)
         summary_match = re.search(r'## Executive Summary\s*(.*?)(?=##|$)', report_text, re.DOTALL)
         insights_match = re.search(r'## Key Insights\s*(.*?)(?=##|$)', report_text, re.DOTALL)
-        directors_match = re.search(r'## What Each Director Brought to the Table\s*(.*?)(?=##|$)', report_text, re.DOTALL)
         actions_match = re.search(r'## Action Items\s*(.*?)(?=##|$)', report_text, re.DOTALL)
+
+        # Extract agent perspectives
+        agent_perspectives = {}
+        if perspectives_match:
+            perspectives_text = perspectives_match.group(1).strip()
+            # More forgiving regex that looks for anything between the position marker and the next double asterisk or section
+            sales_match = re.search(r'\*\*Sales Director\'s Final Position\*\*:?\s*([^*]+?)(?=\n\s*\*\*|$)', perspectives_text, re.DOTALL)
+            cs_match = re.search(r'\*\*Customer Success Director\'s Final Position\*\*:?\s*([^*]+?)(?=\n\s*\*\*|$)', perspectives_text, re.DOTALL)
+            research_match = re.search(r'\*\*Research Director\'s Final Position\*\*:?\s*([^*]+?)(?=\n\s*\*\*|$)', perspectives_text, re.DOTALL)
+            
+            # Clean up the matched text
+            agent_perspectives = {
+                "Sales Director": sales_match.group(1).strip().strip('[]') if sales_match else "Processing response...",
+                "Customer Success Director": cs_match.group(1).strip().strip('[]') if cs_match else "Processing response...",
+                "Research Director": research_match.group(1).strip().strip('[]') if research_match else "Processing response..."
+            }
 
         # Extract key points as list items
         key_points = []
@@ -385,7 +402,8 @@ Write this as a flowing, readable document - NOT as JSON. Use markdown formattin
             summary=report_text,  # Full formatted report
             key_points=key_points,
             agent_metrics={},  # Not needed anymore
-            recommendations=recommendations
+            recommendations=recommendations,
+            agent_perspectives=agent_perspectives
         )
 
     def _format_history(

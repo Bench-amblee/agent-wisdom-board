@@ -22,6 +22,7 @@ export interface FinalReport {
   key_points: string[];
   agent_metrics: Record<string, unknown>;
   recommendations: string[];
+  agent_perspectives: Record<string, string>;
 }
 
 export interface BoardDiscussion {
