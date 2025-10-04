@@ -47,16 +47,24 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
+        agent: {
+          sales: "hsl(var(--agent-sales))",
+          "sales-light": "hsl(var(--agent-sales-light))",
+          support: "hsl(var(--agent-support))",
+          "support-light": "hsl(var(--agent-support-light))",
+          research: "hsl(var(--agent-research))",
+          "research-light": "hsl(var(--agent-research-light))",
         },
+      },
+      backgroundImage: {
+        "gradient-sales": "var(--gradient-sales)",
+        "gradient-support": "var(--gradient-support)",
+        "gradient-research": "var(--gradient-research)",
+        "gradient-header": "var(--gradient-header)",
+      },
+      boxShadow: {
+        glow: "var(--shadow-glow)",
+        card: "var(--shadow-card)",
       },
       borderRadius: {
         lg: "var(--radius)",
