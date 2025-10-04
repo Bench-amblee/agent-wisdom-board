@@ -43,19 +43,19 @@ class DiscussionOrchestrator:
         discussion_history: List[Dict[str, str]] = []
 
         # PHASE 1: Research Phase
-        print("📊 Phase 1: Research Phase")
+        print("[PHASE 1] Research Phase")
         research_round = await self._research_phase(question)
         all_rounds.append(research_round)
         self._add_to_history(discussion_history, research_round.messages)
 
         # PHASE 2: Initial Presentation
-        print("🎤 Phase 2: Initial Presentations")
+        print("[PHASE 2] Initial Presentations")
         initial_round = await self._initial_presentation_phase(question, discussion_history)
         all_rounds.append(initial_round)
         self._add_to_history(discussion_history, initial_round.messages)
 
         # PHASE 3: Deliberation (3 rounds)
-        print("💬 Phase 3: Deliberation Rounds")
+        print("[PHASE 3] Deliberation Rounds")
         for i in range(self.deliberation_rounds):
             print(f"   Round {i+1}/{self.deliberation_rounds}")
             delib_round = await self._deliberation_round(
@@ -67,7 +67,7 @@ class DiscussionOrchestrator:
             self._add_to_history(discussion_history, delib_round.messages)
 
         # PHASE 4: Final Synthesis
-        print("📝 Phase 4: Final Synthesis")
+        print("[PHASE 4] Final Synthesis")
         final_report = await self._create_final_report(question, discussion_history)
 
         duration = (datetime.utcnow() - start_time).total_seconds()
@@ -161,7 +161,15 @@ class DiscussionOrchestrator:
         round_num: int
     ) -> AgentMessage:
         """Agent conducts research (gathers context)"""
-        context = await agent.get_context(question if hasattr(agent, 'get_context') and callable(agent.get_context) else None)
+        # Check if get_context accepts a question parameter
+        import inspect
+        sig = inspect.signature(agent.get_context)
+        if len(sig.parameters) > 0:
+            # Research agent - takes question
+            context = await agent.get_context(question)
+        else:
+            # Sales/CS agents - no parameters
+            context = await agent.get_context()
 
         # Use Airia if enabled
         if self.use_airia:
@@ -205,7 +213,13 @@ Provide a brief summary (2-3 sentences) of the key insights you've discovered fr
         round_num: int
     ) -> AgentMessage:
         """Agent presents their initial case/position"""
-        context = await agent.get_context(question if hasattr(agent, 'get_context') and callable(agent.get_context) else None)
+        # Check if get_context accepts a question parameter
+        import inspect
+        sig = inspect.signature(agent.get_context)
+        if len(sig.parameters) > 0:
+            context = await agent.get_context(question)
+        else:
+            context = await agent.get_context()
 
         # Build context from previous messages
         previous_statements = self._format_history(history, ["research", "initial"])
@@ -250,7 +264,13 @@ Be clear, data-driven, and assertive in your position."""
         round_num: int
     ) -> AgentMessage:
         """Agent participates in deliberation round"""
-        context = await agent.get_context(question if hasattr(agent, 'get_context') and callable(agent.get_context) else None)
+        # Check if get_context accepts a question parameter
+        import inspect
+        sig = inspect.signature(agent.get_context)
+        if len(sig.parameters) > 0:
+            context = await agent.get_context(question)
+        else:
+            context = await agent.get_context()
 
         discussion = self._format_history(history, ["initial", "deliberation"])
 
