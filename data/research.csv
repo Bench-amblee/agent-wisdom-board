@@ -1,0 +1,9 @@
+found_at,source_url,headline,summary,feature_tags,confidence,relevance
+2024-09-28,https://fitnessinsights.io/novamart-smart-rower,Connected rower feedback drives upgrades,"User testers cite improved endurance metrics when live resistance adjustments are surfaced in-app.",personalization;coaching,0.82,0.78
+2024-10-01,https://gearreviewer.com/posture-mat-ai,AI posture correction gains traction,"Competitors highlight posture alerts with haptic feedback to cut injury risk during home sessions.",posture;ai,0.76,0.81
+2024-10-03,https://wellnessdata.net/recovery-suite,NovaMart recovery suite interest surges,"Search trends show 35% lift for recovery bundles when bundled with cold therapy guidance.",recovery;bundles,0.71,0.74
+2024-09-27,https://smarthomefitness.substack.com/p/maintenance-coach,Maintenance coach helps retention,"Virtual maintenance nudges cut product returns by 12% over three months in pilot.",retention;coaching,0.68,0.69
+2024-10-05,https://athleteintel.ai/hydration-insights,Hydration tracking demanded by hybrid athletes,"Surveyed users want hydration reminders synced across devices for long-form cardio routines.",hydration;tracking,0.74,0.64
+2024-10-06,https://connectedstrength.org/haptic-feedback-delts,Haptic cues speed advanced lifts,"Power lifters report faster progression when wearable haptics coach range of motion.",ai;strength,0.79,0.72
+2024-10-07,https://fitcoachweekly.com/community-builders,Community challenges increase stickiness,"Brands running monthly leaderboard challenges see 18% higher monthly actives.",community;gamification,0.7,0.83
+2024-10-02,https://homegymintel.com/app-sync-troubleshooting,App sync troubleshooting remains pain point,"Forums cite week-long delays when firmware rollbacks are required for sync issues.",app_sync;support,0.6,0.77

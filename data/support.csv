@@ -1,0 +1,36 @@
+event_time,ticket_id,user_id,event_type,status,topic,message_text
+2024-10-01 08:05:00,T1001,U321,opened,open,shipping,Customer reports delayed delivery.
+2024-10-01 09:10:00,T1001,U321,reply,pending,shipping,Agent requested tracking confirmation.
+2024-10-01 09:30:00,T1001,U321,escalation,pending,shipping,Customer demands overnight replacement.
+2024-10-01 10:15:00,T1001,U321,solved,solved,shipping,Replacement order placed and confirmed.
+2024-10-03 11:02:00,T1002,U287,opened,open,defective_product,Resistance band snapped during first use.
+2024-10-03 13:48:00,T1002,U287,reply,pending,defective_product,Agent requested photos of damage.
+2024-10-03 16:25:00,T1002,U287,reply,pending,defective_product,Customer uploaded photos and serial number.
+2024-10-04 08:40:00,T1002,U287,escalation,pending,defective_product,Customer unhappy with replacement timeline.
+2024-10-05 10:15:00,T1002,U287,solved,solved,defective_product,Replacement kit shipped with expedited label.
+2024-10-04 07:55:00,T1003,U198,opened,open,app_sync,Rowing machine will not sync with mobile app.
+2024-10-04 09:12:00,T1003,U198,reply,pending,app_sync,Agent requested firmware version.
+2024-10-04 11:05:00,T1003,U198,reply,pending,app_sync,Customer confirmed firmware is current.
+2024-10-04 11:45:00,T1003,U198,escalation,pending,app_sync,Issue escalated to Tier 2 for investigation.
+2024-10-05 14:30:00,T1003,U198,reply,pending,app_sync,Tier 2 requested system logs.
+2024-10-06 16:10:00,T1003,U198,escalation,pending,app_sync,Customer states app crashes persist.
+2024-10-08 09:25:00,T1003,U198,solved,solved,app_sync,Patched version deployed and verified with user.
+2024-10-05 12:14:00,T1004,U455,opened,open,billing,Customer charged twice for same order.
+2024-10-05 12:50:00,T1004,U455,reply,pending,billing,Agent requested bank statement screenshot.
+2024-10-05 13:40:00,T1004,U455,reply,pending,billing,Customer uploaded proof of duplicate charge.
+2024-10-05 15:05:00,T1004,U455,solved,solved,billing,Duplicate payment reversed and confirmation sent.
+2024-10-06 08:30:00,T1005,U509,opened,open,refund,Customer wants refund for incorrect size.
+2024-10-06 09:50:00,T1005,U509,reply,pending,refund,Agent initiated return label and instructions.
+2024-10-06 11:20:00,T1005,U509,solved,solved,refund,Refund scheduled upon carrier scan.
+2024-10-07 10:45:00,T1006,U321,opened,open,app_sync,Companion app stuck on loading screen.
+2024-10-07 12:10:00,T1006,U321,reply,pending,app_sync,Agent provided cache reset steps.
+2024-10-07 14:05:00,T1006,U321,escalation,pending,app_sync,Customer reports reset steps failed.
+2024-10-09 09:30:00,T1006,U321,solved,solved,app_sync,Backend sync token reset resolved issue.
+2024-10-08 10:20:00,T1007,U612,opened,open,shipping,Package marked delivered but not received.
+2024-10-08 11:35:00,T1007,U612,reply,pending,shipping,Agent contacted carrier for GPS validation.
+2024-10-08 13:00:00,T1007,U612,reply,pending,shipping,Customer confirmed package at neighbor's house.
+2024-10-08 13:45:00,T1007,U612,solved,solved,shipping,Customer retrieved package successfully.
+2024-10-09 07:25:00,T1008,U233,opened,open,defective_product,Smart bike console not powering on.
+2024-10-09 09:50:00,T1008,U233,reply,pending,defective_product,Agent guided through reset steps.
+2024-10-09 11:30:00,T1008,U233,escalation,pending,defective_product,Console still dead after reset steps.
+2024-10-11 08:45:00,T1008,U233,solved,solved,defective_product,Replacement console shipped overnight.
