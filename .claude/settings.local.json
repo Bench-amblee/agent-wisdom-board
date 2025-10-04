@@ -7,7 +7,11 @@
       "Bash(findstr:*)",
       "Bash(python:*)",
       "Bash(find:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(npm install:*)",
+      "Bash(if exist nul del /F nul)",
+      "Bash(if exist servernul del /F servernul)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

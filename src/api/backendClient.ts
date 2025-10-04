@@ -1,6 +1,17 @@
 // API client for the AI Agent Advisory Board backend
 
-const API_BASE_URL = "http://localhost:8000";
+// Auto-detect environment: use Render in production, localhost in development
+const getApiBaseUrl = () => {
+  // Check if we're in development mode
+  if (import.meta.env.DEV) {
+    return "http://localhost:8000";
+  }
+
+  // Production: use Render backend
+  return "https://agent-advisory-board.onrender.com";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export interface AgentMessage {
   agent: string;
