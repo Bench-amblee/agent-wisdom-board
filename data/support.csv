@@ -1,36 +1,64 @@
 event_time,ticket_id,user_id,event_type,status,topic,message_text
-2024-10-01 08:05:00,T1001,U321,opened,open,shipping,Customer reports delayed delivery.
-2024-10-01 09:10:00,T1001,U321,reply,pending,shipping,Agent requested tracking confirmation.
-2024-10-01 09:30:00,T1001,U321,escalation,pending,shipping,Customer demands overnight replacement.
-2024-10-01 10:15:00,T1001,U321,solved,solved,shipping,Replacement order placed and confirmed.
-2024-10-03 11:02:00,T1002,U287,opened,open,defective_product,Resistance band snapped during first use.
-2024-10-03 13:48:00,T1002,U287,reply,pending,defective_product,Agent requested photos of damage.
-2024-10-03 16:25:00,T1002,U287,reply,pending,defective_product,Customer uploaded photos and serial number.
-2024-10-04 08:40:00,T1002,U287,escalation,pending,defective_product,Customer unhappy with replacement timeline.
-2024-10-05 10:15:00,T1002,U287,solved,solved,defective_product,Replacement kit shipped with expedited label.
-2024-10-04 07:55:00,T1003,U198,opened,open,app_sync,Rowing machine will not sync with mobile app.
-2024-10-04 09:12:00,T1003,U198,reply,pending,app_sync,Agent requested firmware version.
-2024-10-04 11:05:00,T1003,U198,reply,pending,app_sync,Customer confirmed firmware is current.
-2024-10-04 11:45:00,T1003,U198,escalation,pending,app_sync,Issue escalated to Tier 2 for investigation.
-2024-10-05 14:30:00,T1003,U198,reply,pending,app_sync,Tier 2 requested system logs.
-2024-10-06 16:10:00,T1003,U198,escalation,pending,app_sync,Customer states app crashes persist.
-2024-10-08 09:25:00,T1003,U198,solved,solved,app_sync,Patched version deployed and verified with user.
-2024-10-05 12:14:00,T1004,U455,opened,open,billing,Customer charged twice for same order.
-2024-10-05 12:50:00,T1004,U455,reply,pending,billing,Agent requested bank statement screenshot.
-2024-10-05 13:40:00,T1004,U455,reply,pending,billing,Customer uploaded proof of duplicate charge.
-2024-10-05 15:05:00,T1004,U455,solved,solved,billing,Duplicate payment reversed and confirmation sent.
-2024-10-06 08:30:00,T1005,U509,opened,open,refund,Customer wants refund for incorrect size.
-2024-10-06 09:50:00,T1005,U509,reply,pending,refund,Agent initiated return label and instructions.
-2024-10-06 11:20:00,T1005,U509,solved,solved,refund,Refund scheduled upon carrier scan.
-2024-10-07 10:45:00,T1006,U321,opened,open,app_sync,Companion app stuck on loading screen.
-2024-10-07 12:10:00,T1006,U321,reply,pending,app_sync,Agent provided cache reset steps.
-2024-10-07 14:05:00,T1006,U321,escalation,pending,app_sync,Customer reports reset steps failed.
-2024-10-09 09:30:00,T1006,U321,solved,solved,app_sync,Backend sync token reset resolved issue.
-2024-10-08 10:20:00,T1007,U612,opened,open,shipping,Package marked delivered but not received.
-2024-10-08 11:35:00,T1007,U612,reply,pending,shipping,Agent contacted carrier for GPS validation.
-2024-10-08 13:00:00,T1007,U612,reply,pending,shipping,Customer confirmed package at neighbor's house.
-2024-10-08 13:45:00,T1007,U612,solved,solved,shipping,Customer retrieved package successfully.
-2024-10-09 07:25:00,T1008,U233,opened,open,defective_product,Smart bike console not powering on.
-2024-10-09 09:50:00,T1008,U233,reply,pending,defective_product,Agent guided through reset steps.
-2024-10-09 11:30:00,T1008,U233,escalation,pending,defective_product,Console still dead after reset steps.
-2024-10-11 08:45:00,T1008,U233,solved,solved,defective_product,Replacement console shipped overnight.
+2025-09-25 09:12:00,T001,U001,opened,open,shipping,My NovaMat took 10 days to arrive
+2025-09-25 09:40:00,T001,U001,reply,pending,shipping,We are checking with the courier for an updated scan
+2025-09-25 18:05:00,T001,U001,reply,pending,shipping,Carrier confirmed package is in regional hub
+2025-09-26 08:25:00,T001,U001,solved,solved,shipping,Order delivered and customer confirmed receipt
+2025-09-26 12:03:00,T002,U017,opened,open,defective_product,My SmartBand is not connecting to Bluetooth
+2025-09-26 12:22:00,T002,U017,reply,pending,defective_product,Agent guided user through hard reset steps
+2025-09-26 12:40:00,T002,U017,escalation,pending,defective_product,Reset did not work issue persists
+2025-09-26 13:20:00,T002,U017,solved,solved,defective_product,Replacement shipped with overnight delivery
+2025-09-27 10:30:00,T003,U042,opened,open,refund,Need to return my NovaKettlebell for a smaller size
+2025-09-27 12:05:00,T003,U042,reply,pending,refund,Provided prepaid return label and instructions
+2025-09-27 15:00:00,T003,U042,solved,solved,refund,Refund processed successfully after carrier scan
+2025-09-28 08:15:00,T004,U021,opened,open,app_sync,NovaFit app crashes after login on my tablet
+2025-09-28 08:45:00,T004,U021,reply,pending,app_sync,Support asked for OS version and crash log
+2025-09-28 09:20:00,T004,U021,escalation,pending,app_sync,Reinstall failed and crash still happens
+2025-09-28 12:05:00,T004,U021,reply,pending,app_sync,Tier 2 collecting telemetry for engineering
+2025-09-29 19:10:00,T004,U021,solved,solved,app_sync,Patched build deployed resolving crash loop
+2025-09-28 11:00:00,T005,U099,opened,open,shipping,Tracking shows delayed for five days with no updates
+2025-09-29 08:50:00,T005,U099,reply,pending,shipping,Contacted carrier for depot investigation
+2025-09-29 16:20:00,T005,U099,escalation,pending,shipping,Customer needs shipment before launch event
+2025-10-01 10:05:00,T005,U099,solved,solved,shipping,Package rerouted and delivered with apology credit
+2025-09-29 10:15:00,T006,U043,opened,open,billing,Charged twice for September subscription
+2025-09-29 11:40:00,T006,U043,reply,pending,billing,Confirmed duplicate payment with finance team
+2025-09-29 14:00:00,T006,U043,solved,solved,billing,Issued refund and emailed receipt to customer
+2025-09-30 08:45:00,T007,U088,opened,open,defective_product,Resistance band snapped after two days
+2025-09-30 09:10:00,T007,U088,reply,pending,defective_product,Requested photos and order number
+2025-09-30 09:30:00,T007,U088,escalation,pending,defective_product,Customer worried product is unsafe
+2025-10-01 15:35:00,T007,U088,reply,pending,defective_product,Quality reviewed batch and approved replacement
+2025-10-02 09:40:00,T007,U088,solved,solved,defective_product,Replacement kit shipped with safety notice
+2025-09-30 10:30:00,T008,U061,opened,open,app_sync,App is not logging workout duration on my NovaBike
+2025-09-30 12:15:00,T008,U061,reply,pending,app_sync,Shared troubleshooting to refresh token cache
+2025-10-01 09:25:00,T008,U061,escalation,pending,app_sync,Telemetry still missing after reset
+2025-10-02 08:10:00,T008,U061,reply,pending,app_sync,Tier 2 collecting ride log bundle for analysis
+2025-10-04 07:30:00,T008,U061,escalation,pending,app_sync,Customer reports crashes during live classes
+2025-10-05 15:20:00,T008,U061,solved,solved,app_sync,Server hotfix deployed updating sync service
+2025-10-01 10:00:00,T009,U002,opened,open,shipping,My dumbbells still have not arrived
+2025-10-01 12:30:00,T009,U002,escalation,pending,shipping,Need this order before the weekend challenge
+2025-10-02 16:45:00,T009,U002,reply,pending,shipping,Carrier located package and scheduled express delivery
+2025-10-03 09:15:00,T009,U002,solved,solved,shipping,Order delivered and loyalty credit applied
+2025-10-03 11:45:00,T010,U077,opened,open,refund,Returning unopened NovaMat
+2025-10-03 13:10:00,T010,U077,reply,pending,refund,Shared return authorization details
+2025-10-03 16:00:00,T010,U077,solved,solved,refund,Refund processed same day
+2025-10-04 08:30:00,T011,U025,opened,open,defective_product,Light sensor on NovaRow is not working
+2025-10-04 09:50:00,T011,U025,reply,pending,defective_product,Guided through firmware reinstall
+2025-10-04 15:20:00,T011,U025,escalation,pending,defective_product,Sensors still unresponsive after reinstall
+2025-10-05 10:05:00,T011,U025,reply,pending,defective_product,Engineering reviewing manufacturing lot
+2025-10-06 13:30:00,T011,U025,solved,solved,defective_product,Replacement console shipped with QA report
+2025-10-04 18:45:00,T012,U133,opened,open,shipping,Package marked delivered but not received
+2025-10-05 09:20:00,T012,U133,reply,pending,shipping,Agent requested carrier GPS confirmation
+2025-10-05 11:30:00,T012,U133,reply,pending,shipping,Neighbor returned package to customer
+2025-10-05 12:05:00,T012,U133,solved,solved,shipping,Delivery confirmed and ticket closed
+2025-10-05 08:55:00,T013,U054,opened,open,app_sync,App fails to sync heart rate monitor mid workout
+2025-10-05 11:10:00,T013,U054,reply,pending,app_sync,Requested sync logs and device firmware version
+2025-10-06 09:45:00,T013,U054,escalation,pending,app_sync,Logs show auth token drops every session
+2025-10-07 14:15:00,T013,U054,reply,pending,app_sync,Engineering testing new token refresh policy
+2025-10-08 08:25:00,T013,U054,escalation,pending,app_sync,Customer reports issue persists post beta build
+2025-10-06 07:35:00,T014,U311,opened,open,shipping,Split shipment delivered missing NovaBench
+2025-10-06 09:00:00,T014,U311,reply,pending,shipping,Warehouse verifying inventory levels
+2025-10-07 10:40:00,T014,U311,reply,pending,shipping,Carrier confirmed parcel misrouted
+2025-10-08 16:30:00,T014,U311,solved,solved,shipping,Replacement box dispatched overnight
+2025-10-06 12:05:00,T015,U189,opened,open,defective_product,NovaScale readings fluctuate wildly
+2025-10-06 14:50:00,T015,U189,reply,pending,defective_product,Walked through calibration steps
+2025-10-07 08:35:00,T015,U189,escalation,pending,defective_product,Calibration failed even after reboot
+2025-10-08 11:20:00,T015,U189,solved,solved,defective_product,New sensor module shipped with QA follow up
