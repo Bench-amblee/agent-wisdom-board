@@ -1,10 +1,11 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
+from pathlib import Path
 
 class Settings(BaseSettings):
-    openai_api_key: str
-    linkup_api_key: str
-    airia_api_key: str
+    openai_api_key: Optional[str] = None
+    linkup_api_key: Optional[str] = None
+    airia_api_key: Optional[str] = None
     airia_base_url: str = "https://api.airia.ai/v2"
     linkup_base_url: str = "https://api.linkup.so/v1"
 
@@ -16,8 +17,10 @@ class Settings(BaseSettings):
     # Enable Airia orchestration
     use_airia_orchestration: bool = False
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    model_config = SettingsConfigDict(
+        env_file=str(Path(__file__).parent.parent / ".env"),
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+    )
 
 settings = Settings()

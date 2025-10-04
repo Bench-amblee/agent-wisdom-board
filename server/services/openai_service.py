@@ -2,13 +2,22 @@
 OpenAI service for agent responses
 """
 from openai import AsyncOpenAI
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from config import settings
 
 class OpenAIService:
     def __init__(self):
-        self.client = AsyncOpenAI(api_key=settings.openai_api_key)
         self.model = "gpt-4o-mini"
+        self._client: Optional[AsyncOpenAI] = None
+
+    def _get_client(self) -> AsyncOpenAI:
+        if self._client is None:
+            if not settings.openai_api_key:
+                raise RuntimeError(
+                    "OpenAI API key not configured. Set OPENAI_API_KEY in the environment or .env file."
+                )
+            self._client = AsyncOpenAI(api_key=settings.openai_api_key)
+        return self._client
 
     async def generate_response(
         self,
@@ -28,7 +37,8 @@ class OpenAIService:
             Generated response text
         """
         try:
-            response = await self.client.chat.completions.create(
+            client = self._get_client()
+            response = await client.chat.completions.create(
                 model=self.model,
                 messages=messages,
                 temperature=temperature,
@@ -48,7 +58,8 @@ class OpenAIService:
     ) -> str:
         """Generate a structured JSON response using response_format constraints."""
         try:
-            response = await self.client.chat.completions.create(
+            client = self._get_client()
+            response = await client.chat.completions.create(
                 model=self.model,
                 messages=messages,
                 temperature=temperature,

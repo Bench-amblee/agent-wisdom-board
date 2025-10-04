@@ -98,3 +98,72 @@ npm run start:dev
 
 The server exposes proxy endpoints under `/api/openai`, `/api/linkup` and `/api/airia`. The frontend helper `src/api/backendClient.ts` shows how to call them.
 
+
+
+# 🧠 NovaMart Query Pack
+
+> **NovaMart – Home Fitness Gear**  
+> Data Intelligence Layer powering our AI agents: Support, Sales, and Research.
+
+---
+
+## 📦 Overview
+
+The **Query Pack** is a lightweight, pre-processed JSON layer that summarizes NovaMart’s internal data.  
+It transforms raw CSV files into structured insights that our agents can consume directly — both **locally** and in **Airia**.
+
+This allows our agents to reason faster, avoid repetitive SQL/CSV scans, and maintain a shared, consistent understanding of the company’s data.
+
+---
+
+## 🏢 About the Company
+
+**NovaMart** is a next-gen ecommerce brand focused on **AI-powered home fitness gear**.  
+We sell products like:
+- 🏋️ Smart dumbbells  
+- 🧘 AI-connected resistance bands  
+- 💪 Intelligent workout mats and recovery sensors  
+
+Our mission is simple:  
+> *Help people train smarter at home using adaptive AI technology.*
+
+---
+
+## ⚙️ Data Sources
+
+All analytics in this Query Pack come from NovaMart’s core operational datasets:
+
+| Dataset | File | Description |
+|----------|------|--------------|
+| **Customer Support** | `data/support.csv` | Support tickets and chat interactions about orders, returns, defects, and app issues. |
+| **Sales Pipeline** | `data/sales.csv` | Opportunities, lead sources, and win/loss outcomes from marketing channels. |
+| **Market Research** | `data/research.csv` | Aggregated web insights and trend findings from the fitness tech market. |
+
+These CSVs represent NovaMart’s internal data streams.  
+They are processed locally into a unified **`query_pack.json`** file that contains key business signals for each domain.
+
+---
+
+## 🧩 Structure of `query_pack.json`
+
+The Query Pack summarizes data into three top-level domains:
+
+```json
+{
+  "meta": {
+    "generated_at": "2025-10-04T12:00:00Z",
+    "source": "NovaMart Home Fitness Data"
+  },
+  "support": {
+    "rising_topics": [],
+    "escalation_rate_by_topic": [],
+    "p50_tts_by_topic": []
+  },
+  "sales": {
+    "stalled_opps_gt14d": [],
+    "win_rate_by_source": []
+  },
+  "research": {
+    "top_findings": []
+  }
+}
