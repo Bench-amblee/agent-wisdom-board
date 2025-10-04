@@ -71,3 +71,30 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Local backend & API keys
+
+This project includes a small Express backend proxy that lets you keep API keys out of the client.
+
+1. Copy `.env.example` to `.env` and fill in your real keys (do NOT commit `.env`).
+
+2. Install dependencies:
+
+```powershell
+npm install
+```
+
+3. Start the backend server:
+
+```powershell
+npm run server
+```
+
+Or start frontend + server concurrently:
+
+```powershell
+npm run start:dev
+```
+
+The server exposes proxy endpoints under `/api/openai`, `/api/linkup` and `/api/airia`. The frontend helper `src/api/backendClient.ts` shows how to call them.
+

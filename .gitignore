@@ -1,4 +1,21 @@
-# Logs
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+.DS_Store
+/.idea
+.vscode
+/*.log
+/.expo
+/.parcel-cache
+/.turbo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+/.history# Logs
 logs
 *.log
 npm-debug.log*
