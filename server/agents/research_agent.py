@@ -27,9 +27,12 @@ class ResearchAgent(BaseAgent):
 
             context = "Recent Web Research Findings:\n\n"
             for idx, result in enumerate(search_results, 1):
-                title = result.get('title', 'Untitled')
-                snippet = result.get('snippet', result.get('description', 'No description'))
+                title = result.get('name', result.get('title', 'Untitled'))
+                snippet = result.get('content', result.get('snippet', 'No description'))
                 url = result.get('url', '')
+                # Truncate content if too long
+                if len(snippet) > 200:
+                    snippet = snippet[:200] + "..."
                 context += f"{idx}. {title}\n   {snippet}\n   Source: {url}\n\n"
 
             return context

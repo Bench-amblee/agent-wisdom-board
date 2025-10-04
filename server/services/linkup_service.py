@@ -32,7 +32,7 @@ class LinkupService:
                     f"{self.base_url}/search",
                     headers=self.headers,
                     json={
-                        "query": query,
+                        "q": query,
                         "depth": depth,
                         "outputType": output_type
                     },
@@ -68,7 +68,7 @@ class LinkupService:
 
         formatted_response = f"{answer}\n\nSources:\n"
         for idx, source in enumerate(sources[:5], 1):
-            formatted_response += f"{idx}. {source.get('title', 'Untitled')} - {source.get('url', '')}\n"
+            formatted_response += f"{idx}. {source.get('name', 'Untitled')} - {source.get('url', '')}\n"
 
         return formatted_response
 

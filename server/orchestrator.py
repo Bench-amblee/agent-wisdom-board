@@ -193,7 +193,7 @@ Provide a brief summary (2-3 sentences) of the key insights you've discovered fr
             research_summary = await openai_service.generate_response(
                 messages=[{"role": "user", "content": research_prompt}],
                 temperature=0.7,
-                max_tokens=300
+                max_tokens=150
             )
 
         return AgentMessage(
@@ -244,7 +244,7 @@ Be clear, data-driven, and assertive in your position."""
         initial_case = await openai_service.generate_response(
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
-            max_tokens=600
+            max_tokens=300
         )
 
         return AgentMessage(
@@ -296,7 +296,7 @@ Be direct, collegial, and focused on finding the best solution."""
         deliberation = await openai_service.generate_response(
             messages=[{"role": "user", "content": prompt}],
             temperature=0.9,
-            max_tokens=500
+            max_tokens=250
         )
 
         return AgentMessage(
