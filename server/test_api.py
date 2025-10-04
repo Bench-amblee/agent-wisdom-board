@@ -40,7 +40,7 @@ async def test_single_agent():
         return response.status_code == 200
 
 async def test_advisory_board():
-    """Test full advisory board discussion"""
+    """Test full advisory board discussion (multi-round)"""
     async with httpx.AsyncClient() as client:
         response = await client.post(
             f"{BASE_URL}/api/advisory-board/discuss",
@@ -48,21 +48,78 @@ async def test_advisory_board():
                 "question": "How can we improve customer retention?",
                 "include_research": True
             },
-            timeout=60.0
+            timeout=120.0
         )
         data = response.json()
         print(f"\n✓ Advisory Board Discussion:")
         print(f"  Question: {data['question']}")
-        print(f"  Agents responded: {len(data['agents'])}")
-        for agent in data['agents']:
-            print(f"\n  {agent['agent']}:")
-            print(f"    {agent['response'][:150]}...")
+        print(f"  Total Rounds: {data.get('total_rounds')}")
 
-        if data.get('synthesis'):
-            print(f"\n  Synthesis:")
-            print(f"    {data['synthesis'][:200]}...")
+        rounds = data.get('rounds', [])
+        print(f"  Received {len(rounds)} round objects")
+        for r in rounds[:2]:  # preview first two rounds
+            msgs = r.get('messages', [])
+            print(f"    Round {r.get('round_number')} ({r.get('round_type')}): {len(msgs)} messages")
+            if msgs:
+                first = msgs[0]
+                print(f"      First msg by {first.get('agent')}: {first.get('message','')[:100]}...")
 
-        return response.status_code == 200
+        final_report = data.get('final_report')
+        if final_report:
+            print("\n  Final Report Summary (truncated):")
+            print("    ", final_report.get('summary','')[:200], "...")
+            print("    Key Points:", len(final_report.get('key_points', [])))
+            print("    Recommendations:", len(final_report.get('recommendations', [])))
+        else:
+            print("  ⚠️  No final_report returned")
+
+        return response.status_code == 200 and final_report is not None
+
+async def test_analyze_report():
+    """Test the /api/analyze-report endpoint with mock final report"""
+    mock_report = {
+        "summary": "Our retention lags due to onboarding gaps and insufficient proactive outreach. Sales pipeline quality impacts churn via misaligned expectations.",
+        "key_points": [
+            "Onboarding completion rate below 70%",
+            "High churn in SMB segment month 2-3",
+            "Need unified customer health scoring",
+            "Opportunity in upsell via usage expansion",
+            "Research suggests competitors improving time-to-value"
+        ],
+        "agent_metrics": {
+            "Sales Director": "Provided pipeline quality metrics",
+            "Customer Success Director": "Shared churn cohort analysis",
+            "Research Director": "Benchmarked competitor onboarding times"
+        },
+        "recommendations": [
+            "Implement improved onboarding workflow with milestones",
+            "Deploy early warning churn signals dashboard",
+            "Refine ICP qualification criteria",
+            "Launch structured expansion playbook"
+        ]
+    }
+
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            f"{BASE_URL}/api/analyze-report",
+            json=mock_report,
+            timeout=60.0
+        )
+        if response.status_code != 200:
+            print("✗ Analyze report failed:", response.text)
+            return False
+
+        data = response.json()
+        print("\n✓ Analysis Output:")
+        print("  Consensus:", data.get('consensus','')[:180], "...")
+        action_plan = data.get('action_plan', [])
+        print(f"  Action Plan Tasks: {len(action_plan)}")
+        for t in action_plan:
+            print(f"    - {t.get('priority')} | {t.get('title')} :: {t.get('reasoning','')[:80]}...")
+
+        # Basic validation
+        has_now = any(t.get('priority') == 'Now' for t in action_plan)
+        return has_now and isinstance(action_plan, list)
 
 async def main():
     """Run all tests"""
@@ -75,7 +132,8 @@ async def main():
         ("Health Check", test_health),
         ("List Agents", test_list_agents),
         ("Single Agent Query", test_single_agent),
-        ("Full Advisory Board Discussion", test_advisory_board)
+        ("Full Advisory Board Discussion", test_advisory_board),
+        ("Analyze Final Report", test_analyze_report)
     ]
 
     results = []

@@ -20,7 +20,7 @@ export interface DiscussionRound {
 export interface FinalReport {
   summary: string;
   key_points: string[];
-  agent_metrics: Record<string, any>;
+  agent_metrics: Record<string, unknown>;
   recommendations: string[];
 }
 
@@ -30,6 +30,17 @@ export interface BoardDiscussion {
   final_report?: FinalReport;
   total_rounds: number;
   duration_seconds?: number;
+}
+
+export interface PrioritizedTask {
+  title: string;
+  priority: "Now" | "Next" | "Later";
+  reasoning: string;
+}
+
+export interface AnalysisOutput {
+  consensus: string;
+  action_plan: PrioritizedTask[];
 }
 
 export interface QuestionRequest {
@@ -73,7 +84,7 @@ export async function askAdvisoryBoard(
 export async function askAdvisoryBoardQuick(
   question: string,
   includeResearch: boolean = true
-): Promise<any> {
+): Promise<unknown> {
   const res = await fetch(`${API_BASE_URL}/api/advisory-board/quick-discuss`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -96,7 +107,7 @@ export async function askAdvisoryBoardQuick(
 export async function askSingleAgent(
   agentId: string,
   question: string
-): Promise<any> {
+): Promise<unknown> {
   const res = await fetch(`${API_BASE_URL}/api/agent/${agentId}/ask`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -105,6 +116,21 @@ export async function askSingleAgent(
 
   if (!res.ok) {
     throw new Error(`Single agent request failed: ${res.statusText}`);
+  }
+
+  return res.json();
+}
+
+export async function analyzeFinalReport(report: FinalReport): Promise<AnalysisOutput> {
+  const res = await fetch(`${API_BASE_URL}/api/analyze-report`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(report),
+  });
+
+  if (!res.ok) {
+    const detail = await res.json().catch(() => ({}));
+    throw new Error(detail.detail || `Analysis request failed: ${res.statusText}`);
   }
 
   return res.json();

@@ -39,6 +39,27 @@ class OpenAIService:
             print(f"OpenAI API error: {e}")
             return f"Error generating response: {str(e)}"
 
+    async def generate_structured_json(
+        self,
+        messages: List[Dict[str, str]],
+        response_format: Dict[str, Any],
+        temperature: float = 0.3,
+        max_tokens: int = 1200
+    ) -> str:
+        """Generate a structured JSON response using response_format constraints."""
+        try:
+            response = await self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=temperature,
+                max_tokens=max_tokens,
+                response_format=response_format,
+            )
+            return response.choices[0].message.content or ""
+        except Exception as e:
+            print(f"OpenAI API error: {e}")
+            return f"Error generating response: {str(e)}"
+
     async def generate_agent_response(
         self,
         agent_name: str,

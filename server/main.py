@@ -4,7 +4,8 @@ FastAPI backend for AI Agent Advisory Board
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
-from typing import List, Dict
+from typing import List, Dict, Any, Literal
+from pydantic import BaseModel, Field, ValidationError
 import asyncio
 
 from models import QuestionRequest, BoardDiscussion, HealthResponse
@@ -12,6 +13,7 @@ from agents.sales_agent import sales_agent
 from agents.customer_service_agent import customer_service_agent
 from agents.research_agent import research_agent
 from orchestrator import orchestrator
+from services.openai_service import openai_service
 
 app = FastAPI(
     title="AI Agent Advisory Board",
@@ -34,6 +36,26 @@ AGENTS = {
     "customer_service": customer_service_agent,
     "research": research_agent
 }
+
+
+class ReportInput(BaseModel):
+    summary: str
+    key_points: List[str]
+    agent_metrics: Dict[str, Any]
+    recommendations: List[str]
+
+
+class PrioritizedTask(BaseModel):
+    title: str = Field(description="The clear, actionable task title.")
+    priority: Literal["Now", "Next", "Later"] = Field(
+        description="Either 'Now', 'Next', or 'Later'."
+    )
+    reasoning: str = Field(description="Brief justification for the priority.")
+
+
+class AnalysisOutput(BaseModel):
+    consensus: str = Field(description="A 2-3 sentence synthesis of the agents' core agreement.")
+    action_plan: List[PrioritizedTask]
 
 @app.get("/", tags=["Health"])
 async def root():
@@ -138,6 +160,49 @@ async def ask_single_agent(agent_id: str, request: QuestionRequest):
         "response": response,
         "timestamp": datetime.utcnow().isoformat()
     }
+
+
+@app.post("/api/analyze-report", response_model=AnalysisOutput, tags=["Analysis"])
+async def analyze_report(report: ReportInput):
+    """Convert the final report JSON into a prioritized action plan."""
+
+    report_text = (
+        "Executive Summary: "
+        f"{report.summary}\n"
+        f"Key Points: {', '.join(report.key_points)}\n"
+        f"Raw Recommendations: {', '.join(report.recommendations)}\n"
+        f"Agent Contributions: {report.agent_metrics}"
+    )
+
+    system_prompt = (
+        "You are a Chief of Staff AI responsible for converting meeting summaries into a "
+        "clear, prioritized action plan.\n"
+        "Identify the core consensus across agents, then produce a prioritized task list.\n"
+        "Use the priorities Now, Next, or Later (1-2 items max for Now)."
+    )
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": report_text},
+    ]
+
+    try:
+        raw_response = await openai_service.generate_structured_json(
+            messages,
+            response_format={"type": "json_object"},
+            temperature=0.4,
+            max_tokens=800,
+        )
+
+        if raw_response.startswith("Error generating response"):
+            raise RuntimeError(raw_response)
+
+        return AnalysisOutput.model_validate_json(raw_response)
+
+    except ValidationError as ve:
+        raise HTTPException(status_code=500, detail=f"Invalid analysis response: {ve}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

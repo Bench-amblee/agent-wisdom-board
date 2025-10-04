@@ -4,13 +4,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
-import { askAdvisoryBoard, type BoardDiscussion } from "@/api/backendClient";
+import {
+  askAdvisoryBoard,
+  analyzeFinalReport,
+  type AnalysisOutput,
+  type BoardDiscussion,
+} from "@/api/backendClient";
+import { ActionPlanDashboard } from "@/components/ActionPlanDashboard";
 
 export function AdvisoryBoardDemo() {
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [discussion, setDiscussion] = useState<BoardDiscussion | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [analysis, setAnalysis] = useState<AnalysisOutput | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleSubmit = async () => {
     if (!question.trim()) return;
@@ -18,6 +27,9 @@ export function AdvisoryBoardDemo() {
     setLoading(true);
     setError(null);
     setDiscussion(null);
+    setAnalysis(null);
+    setAnalysisError(null);
+    setIsAnalyzing(false);
 
     try {
       const result = await askAdvisoryBoard(question, true);
@@ -26,6 +38,22 @@ export function AdvisoryBoardDemo() {
       setError(err instanceof Error ? err.message : "Failed to get response");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAnalyzeReport = async () => {
+    if (!discussion?.final_report) return;
+
+    setIsAnalyzing(true);
+    setAnalysisError(null);
+
+    try {
+      const result = await analyzeFinalReport(discussion.final_report);
+      setAnalysis(result);
+    } catch (err) {
+      setAnalysisError(err instanceof Error ? err.message : "Failed to analyze report");
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -193,6 +221,30 @@ export function AdvisoryBoardDemo() {
                     </ol>
                   </div>
                 )}
+
+                <div className="border-t border-muted-foreground/20 pt-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold">Strategic Action Plan</h3>
+                    {!analysis && !isAnalyzing && (
+                      <Button onClick={handleAnalyzeReport} disabled={!discussion.final_report}>
+                        Generate Action Plan
+                      </Button>
+                    )}
+                  </div>
+
+                  {isAnalyzing && (
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Analyzing report...</span>
+                    </div>
+                  )}
+
+                  {analysisError && (
+                    <p className="text-sm text-destructive">{analysisError}</p>
+                  )}
+
+                  {analysis && <ActionPlanDashboard data={analysis} />}
+                </div>
               </CardContent>
             </Card>
           )}
