@@ -1,35 +1,35 @@
 {
   "meta": {
-    "generated_at": "2025-10-04T17:10:26.808Z"
+    "generated_at": "2025-10-04T17:32:57.709Z"
   },
   "support": {
     "escalation_rate_by_topic": [
       {
         "topic": "app_sync",
-        "escalations": 3,
-        "interactions": 11,
-        "esc_rate_pct": 27.3
+        "escalations": 5,
+        "interactions": 16,
+        "esc_rate_pct": 31.3
       },
       {
         "topic": "defective_product",
-        "escalations": 2,
-        "interactions": 9,
+        "escalations": 4,
+        "interactions": 18,
         "esc_rate_pct": 22.2
       },
       {
         "topic": "shipping",
-        "escalations": 1,
-        "interactions": 8,
-        "esc_rate_pct": 12.5
-      },
-      {
-        "topic": "billing",
-        "escalations": 0,
-        "interactions": 4,
-        "esc_rate_pct": 0
+        "escalations": 2,
+        "interactions": 20,
+        "esc_rate_pct": 10
       },
       {
         "topic": "refund",
+        "escalations": 0,
+        "interactions": 6,
+        "esc_rate_pct": 0
+      },
+      {
+        "topic": "billing",
         "escalations": 0,
         "interactions": 3,
         "esc_rate_pct": 0
@@ -38,44 +38,44 @@
     "p50_tts_by_topic": [
       {
         "topic": "app_sync",
-        "p50_tts_min": 4328
+        "p50_tts_min": 4793
       },
       {
         "topic": "defective_product",
-        "p50_tts_min": 2897
-      },
-      {
-        "topic": "billing",
-        "p50_tts_min": 171
-      },
-      {
-        "topic": "refund",
-        "p50_tts_min": 170
+        "p50_tts_min": 2885
       },
       {
         "topic": "shipping",
-        "p50_tts_min": 168
+        "p50_tts_min": 2835
+      },
+      {
+        "topic": "refund",
+        "p50_tts_min": 263
+      },
+      {
+        "topic": "billing",
+        "p50_tts_min": 225
       }
     ],
     "rising_topics": [
       {
-        "topic": "app_sync",
-        "total": 6
-      },
-      {
         "topic": "shipping",
-        "total": 5
+        "total": 13
       },
       {
         "topic": "defective_product",
-        "total": 5
+        "total": 10
       },
       {
-        "topic": "billing",
-        "total": 3
+        "topic": "app_sync",
+        "total": 9
       },
       {
         "topic": "refund",
+        "total": 4
+      },
+      {
+        "topic": "billing",
         "total": 2
       }
     ]
@@ -83,42 +83,36 @@
   "sales": {
     "stalled_opps_gt14d": [
       {
-        "opp_id": "O102",
+        "opp_id": "O004",
         "amount_usd": 12000,
-        "stage": "Proposal",
-        "days_stalled": 20
-      },
-      {
-        "opp_id": "O105",
-        "amount_usd": 9200,
         "stage": "Commit",
-        "days_stalled": 19
+        "days_stalled": 17
       },
       {
-        "opp_id": "O107",
-        "amount_usd": 7600,
-        "stage": "Demo",
-        "days_stalled": 16
+        "opp_id": "O010",
+        "amount_usd": 5200,
+        "stage": "SQL",
+        "days_stalled": 17
       }
     ],
     "win_rate_by_source": [
       {
-        "source": "ads",
-        "won": 1,
-        "total": 2,
-        "win_rate": 50
-      },
-      {
         "source": "affiliate",
-        "won": 1,
-        "total": 2,
-        "win_rate": 50
+        "won": 3,
+        "total": 4,
+        "win_rate": 75
       },
       {
         "source": "referral",
         "won": 1,
         "total": 2,
         "win_rate": 50
+      },
+      {
+        "source": "ads",
+        "won": 0,
+        "total": 5,
+        "win_rate": 0
       },
       {
         "source": "email",
@@ -131,22 +125,22 @@
   "research": {
     "top_findings": [
       {
-        "headline": "Connected rower feedback drives upgrades",
-        "summary": "User testers cite improved endurance metrics when live resistance adjustments are surfaced in-app.",
-        "source_url": "https://fitnessinsights.io/novamart-smart-rower",
-        "score": 0.64
+        "headline": "AI posture correction gains momentum",
+        "summary": "Startups using motion sensors to guide form in home gyms",
+        "source_url": "https://techfitness.ai/blog/posture",
+        "score": 0.85
       },
       {
-        "headline": "AI posture correction gains traction",
-        "summary": "Competitors highlight posture alerts with haptic feedback to cut injury risk during home sessions.",
-        "source_url": "https://gearreviewer.com/posture-mat-ai",
-        "score": 0.62
+        "headline": "Smart recovery mats trending",
+        "summary": "Athletes adopting mats with pressure sensors for muscle recovery",
+        "source_url": "https://fitinsider.com/articles/recovery-ai",
+        "score": 0.77
       },
       {
-        "headline": "Community challenges increase stickiness",
-        "summary": "Brands running monthly leaderboard challenges see 18% higher monthly actives.",
-        "source_url": "https://fitcoachweekly.com/community-builders",
-        "score": 0.58
+        "headline": "Subscription models drive 40% retention",
+        "summary": "Brands moving from one-off sales to AI-driven subscriptions",
+        "source_url": "https://aifitnessdaily.com/market/subscriptions",
+        "score": 0.68
       }
     ]
   }
