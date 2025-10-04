@@ -11,7 +11,8 @@
       "Bash(npm install:*)",
       "Bash(if exist nul del /F nul)",
       "Bash(if exist servernul del /F servernul)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

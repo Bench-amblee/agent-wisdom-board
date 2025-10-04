@@ -9,7 +9,12 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-app.use(cors());
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || 'https://ai-advisor-board.vercel.app',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 
 // Request size limits to prevent abuse
 app.use(express.json({ limit: '100kb' }));
