@@ -10,8 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "server": "node ./server/index.js",
-    "fastapi": "cd server && uvicorn main:app --reload --port 8000",
-    "start:dev": "concurrently \"vite\" \"cd server && uvicorn main:app --reload --port 8000\""
+    "fastapi": "cd server && python -m uvicorn main:app --reload --port 8000",
+    "start:dev": "concurrently \"vite\" \"cd server && python -m uvicorn main:app --reload --port 8000\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
