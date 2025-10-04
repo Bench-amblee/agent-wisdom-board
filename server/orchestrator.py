@@ -25,7 +25,7 @@ from config import settings
 class DiscussionOrchestrator:
     def __init__(self):
         self.agents = [sales_agent, customer_service_agent, research_agent]
-        self.deliberation_rounds = 3
+        self.deliberation_rounds = 1
         self.use_airia = settings.use_airia_orchestration
 
     async def conduct_discussion(self, question: str) -> BoardDiscussion:
@@ -193,7 +193,7 @@ Provide a brief summary (2-3 sentences) of the key insights you've discovered fr
             research_summary = await openai_service.generate_response(
                 messages=[{"role": "user", "content": research_prompt}],
                 temperature=0.7,
-                max_tokens=150
+                max_tokens=100
             )
 
         return AgentMessage(
@@ -244,7 +244,7 @@ Be clear, data-driven, and assertive in your position."""
         initial_case = await openai_service.generate_response(
             messages=[{"role": "user", "content": prompt}],
             temperature=0.8,
-            max_tokens=300
+            max_tokens=200
         )
 
         return AgentMessage(
@@ -296,7 +296,7 @@ Be direct, collegial, and focused on finding the best solution."""
         deliberation = await openai_service.generate_response(
             messages=[{"role": "user", "content": prompt}],
             temperature=0.9,
-            max_tokens=250
+            max_tokens=150
         )
 
         return AgentMessage(
@@ -316,52 +316,77 @@ Be direct, collegial, and focused on finding the best solution."""
         """Create comprehensive final synthesis report"""
         full_discussion = self._format_history(history, ["research", "initial", "deliberation"])
 
-        synthesis_prompt = f"""You are an executive synthesizing an advisory board discussion.
+        synthesis_prompt = f"""You are an executive synthesizing an advisory board discussion into a clear, actionable report.
 
 Question: {question}
 
 Complete Discussion:
 {full_discussion}
 
-Create a comprehensive final report with:
+Create a comprehensive final report that is easy to read and visually scannable. Write in a professional but conversational tone.
 
-1. EXECUTIVE SUMMARY (2-3 paragraphs synthesizing the discussion)
+## Executive Summary
+Write 2-3 compelling paragraphs that capture the essence of the discussion. Focus on the key decision points and consensus reached.
 
-2. KEY POINTS (5-7 critical insights from the discussion)
+## Key Insights
+Provide 5-7 critical insights discovered during the discussion. Each should be:
+- Clear and specific
+- Data-driven when possible
+- Actionable
 
-3. AGENT CONTRIBUTIONS (Evaluate each agent's contribution):
-   - Sales Director: [summary and key metrics/insights provided]
-   - Customer Success Director: [summary and key metrics/insights provided]
-   - Research Director: [summary and key insights provided]
+## What Each Director Brought to the Table
+For each director, summarize their unique contribution:
 
-4. RECOMMENDATIONS (3-5 actionable recommendations based on the full discussion)
+**Sales Director**: [What they emphasized, key metrics they highlighted, their perspective]
 
-Format your response as JSON with keys: summary, key_points (array), agent_metrics (object), recommendations (array)"""
+**Customer Success Director**: [What they emphasized, customer insights they shared, their concerns]
 
-        synthesis_json = await openai_service.generate_response(
+**Research Director**: [External insights they provided, market trends they highlighted, their recommendations]
+
+## Action Items
+Provide 3-5 specific, actionable recommendations. Each should:
+- Be concrete and implementable
+- Have clear business impact
+- Build on the discussion insights
+
+Write this as a flowing, readable document - NOT as JSON. Use markdown formatting for headers and emphasis where appropriate."""
+
+        report_text = await openai_service.generate_response(
             messages=[{"role": "user", "content": synthesis_prompt}],
             temperature=0.7,
-            max_tokens=2000
+            max_tokens=1500
         )
 
-        # Parse the JSON response
-        import json
-        try:
-            report_data = json.loads(synthesis_json)
-            return FinalReport(
-                summary=report_data.get("summary", ""),
-                key_points=report_data.get("key_points", []),
-                agent_metrics=report_data.get("agent_metrics", {}),
-                recommendations=report_data.get("recommendations", [])
-            )
-        except json.JSONDecodeError:
-            # Fallback if JSON parsing fails
-            return FinalReport(
-                summary=synthesis_json,
-                key_points=[],
-                agent_metrics={},
-                recommendations=[]
-            )
+        # Parse the markdown-formatted report into structured sections
+        import re
+
+        # Extract sections using regex
+        summary_match = re.search(r'## Executive Summary\s*(.*?)(?=##|$)', report_text, re.DOTALL)
+        insights_match = re.search(r'## Key Insights\s*(.*?)(?=##|$)', report_text, re.DOTALL)
+        directors_match = re.search(r'## What Each Director Brought to the Table\s*(.*?)(?=##|$)', report_text, re.DOTALL)
+        actions_match = re.search(r'## Action Items\s*(.*?)(?=##|$)', report_text, re.DOTALL)
+
+        # Extract key points as list items
+        key_points = []
+        if insights_match:
+            insights_text = insights_match.group(1).strip()
+            # Extract bullet points or numbered items
+            points = re.findall(r'(?:^|\n)[\-\*\d\.]\s*(.+?)(?=\n[\-\*\d\.]|\n\n|$)', insights_text, re.MULTILINE)
+            key_points = [p.strip() for p in points if p.strip()]
+
+        # Extract recommendations
+        recommendations = []
+        if actions_match:
+            actions_text = actions_match.group(1).strip()
+            recs = re.findall(r'(?:^|\n)[\-\*\d\.]\s*(.+?)(?=\n[\-\*\d\.]|\n\n|$)', actions_text, re.MULTILINE)
+            recommendations = [r.strip() for r in recs if r.strip()]
+
+        return FinalReport(
+            summary=report_text,  # Full formatted report
+            key_points=key_points,
+            agent_metrics={},  # Not needed anymore
+            recommendations=recommendations
+        )
 
     def _format_history(
         self,

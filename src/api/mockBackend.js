@@ -54,13 +54,34 @@ export async function startDiscussion(topic) {
 
 // For streaming individual messages with delays
 export async function* streamDiscussion(topic) {
-  const { messages, summary } = await startDiscussion(topic);
-  
-  for (const message of messages) {
-    await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 400));
-    yield { type: "message", data: message };
+  // Simulate phases and rounds in the discussion stream
+  const phases = [
+    { id: "PHASE 1", label: "Research Phase" },
+    { id: "PHASE 2", label: "Initial Presentations" },
+    { id: "PHASE 3", label: "Deliberation Rounds" },
+    { id: "PHASE 4", label: "Final Synthesis" },
+  ];
+
+  // Start with research phase
+  for (const phase of phases) {
+    // announce phase
+    yield { type: "phase", data: { phase: phase.id, label: phase.label } };
+
+    // in each phase, stream a subset of messages
+    const { messages, summary } = await startDiscussion(topic);
+    // send 3 messages per phase to simulate progress
+    const slice = messages.slice(0, 3);
+    for (const message of slice) {
+      await new Promise((resolve) => setTimeout(resolve, 600 + Math.random() * 400));
+      yield { type: "message", data: message };
+    }
+
+    // small pause between phases
+    await new Promise((resolve) => setTimeout(resolve, 700));
   }
 
+  // final summary
+  const { summary } = await startDiscussion(topic);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   yield { type: "summary", data: summary };
 }

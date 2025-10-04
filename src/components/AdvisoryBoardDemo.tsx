@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2 } from "lucide-react";
+import { Loader2, TrendingUp, Headphones, FlaskConical } from "lucide-react";
 import {
   askAdvisoryBoard,
   analyzeFinalReport,
@@ -11,6 +11,28 @@ import {
   type BoardDiscussion,
 } from "@/api/backendClient";
 import { ActionPlanDashboard } from "@/components/ActionPlanDashboard";
+
+// Agent configuration with icons
+const agentConfig = {
+  "Sales Director": {
+    icon: TrendingUp,
+    color: "text-blue-500",
+    bgColor: "bg-blue-500/10",
+    borderColor: "border-blue-500/30",
+  },
+  "Customer Success Director": {
+    icon: Headphones,
+    color: "text-green-500",
+    bgColor: "bg-green-500/10",
+    borderColor: "border-green-500/30",
+  },
+  "Research Director": {
+    icon: FlaskConical,
+    color: "text-purple-500",
+    bgColor: "bg-purple-500/10",
+    borderColor: "border-purple-500/30",
+  },
+};
 
 export function AdvisoryBoardDemo() {
   const [question, setQuestion] = useState("");
@@ -147,20 +169,33 @@ export function AdvisoryBoardDemo() {
                   </Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                {round.messages.map((message, idx) => (
-                  <div key={idx} className="border-l-4 border-primary pl-4 py-2">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-semibold">{message.agent}</span>
-                      <Badge variant="outline" className="text-xs">
-                        {message.role}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                      {message.message}
-                    </p>
-                  </div>
-                ))}
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {round.messages.map((message, idx) => {
+                    const config = agentConfig[message.agent as keyof typeof agentConfig];
+                    const Icon = config?.icon;
+                    return (
+                      <div key={idx} className={`border rounded-lg p-4 ${config?.bgColor} ${config?.borderColor}`}>
+                        <div className="flex items-center gap-2 mb-3">
+                          {Icon && (
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${config.bgColor}`}>
+                              <Icon className={`h-4 w-4 ${config.color}`} />
+                            </div>
+                          )}
+                          <div className="flex-1">
+                            <span className={`font-semibold text-sm ${config?.color}`}>{message.agent}</span>
+                            <Badge variant="outline" className="text-xs ml-2">
+                              {message.role}
+                            </Badge>
+                          </div>
+                        </div>
+                        <p className="text-sm text-foreground/80 whitespace-pre-wrap">
+                          {message.message}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
               </CardContent>
             </Card>
           ))}

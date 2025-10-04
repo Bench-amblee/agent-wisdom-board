@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Brain, RotateCcw } from "lucide-react";
+import PhaseBar from "@/components/PhaseBar";
 import { Button } from "@/components/ui/button";
 import { InputBar } from "@/components/InputBar";
 import { ChatWindow } from "@/components/ChatWindow";
@@ -11,6 +12,8 @@ const Index = () => {
   const [messages, setMessages] = useState([]);
   const [summary, setSummary] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [phase, setPhase] = useState(null);
+  const [tab, setTab] = useState("discussion");
   const [currentTopic, setCurrentTopic] = useState("");
 
   const handleStartDiscussion = async (topic) => {
@@ -21,15 +24,22 @@ const Index = () => {
 
     try {
       const stream = streamDiscussion(topic);
-      
+
       for await (const chunk of stream) {
-        if (chunk.type === "message") {
+        if (chunk.type === "phase") {
+          setPhase(chunk.data);
+          // ensure the discussion tab is visible when agents work
+          setTab("discussion");
+        } else if (chunk.type === "message") {
           setMessages((prev) => [...prev, chunk.data]);
         } else if (chunk.type === "summary") {
           setSummary(chunk.data);
+          // switch tab to summary when complete
+          setTab("summary");
+          setPhase(null);
         }
       }
-      
+
       toast.success("Discussion complete!");
     } catch (error) {
       toast.error("Failed to start discussion. Please try again.");
@@ -82,9 +92,34 @@ const Index = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <ChatWindow messages={messages} isLoading={isLoading} />
-        <SummaryReport summary={summary} />
-        <InputBar onStartDiscussion={handleStartDiscussion} isLoading={isLoading} />
+        {/* Phase bar */}
+        {phase && <div className="sticky top-16 z-20"><PhaseBar phase={phase} /></div>}
+
+        {/* Tabs */}
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center gap-4 mb-4">
+            <button
+              className={`px-3 py-1 rounded-md ${tab === 'discussion' ? 'bg-primary text-white' : 'bg-muted-foreground/5'}`}
+              onClick={() => setTab('discussion')}
+            >Discussion</button>
+            <button
+              className={`px-3 py-1 rounded-md ${tab === 'summary' ? 'bg-primary text-white' : 'bg-muted-foreground/5'}`}
+              onClick={() => setTab('summary')}
+            >Final Summary</button>
+          </div>
+
+          <div className="flex-1 flex flex-col overflow-hidden">
+            {tab === 'discussion' ? (
+              <ChatWindow messages={messages} isLoading={isLoading} />
+            ) : (
+              <div className="py-4">
+                <SummaryReport summary={summary} />
+              </div>
+            )}
+
+            <InputBar onStartDiscussion={handleStartDiscussion} isLoading={isLoading} />
+          </div>
+        </div>
       </div>
     </div>
   );
