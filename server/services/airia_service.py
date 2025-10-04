@@ -233,10 +233,22 @@ class AiriaService:
         result = await self.execute_pipeline(pipeline_id, input_data)
 
         if "error" in result:
+            print(f"❌ Airia {agent_type} agent error: {result['error']}")
             return f"Error executing {agent_type} agent: {result['error']}"
 
-        # Extract response from Airia result
-        # The exact format depends on your Airia pipeline output
-        return result.get("output", result.get("response", str(result)))
+        # Debug: Print what Airia returns
+        print(f"🔍 Airia {agent_type} response: {result}")
+
+        # Extract response from Airia result - try multiple possible fields
+        response = (
+            result.get("output") or
+            result.get("response") or
+            result.get("result") or
+            result.get("text") or
+            result.get("answer") or
+            str(result)
+        )
+
+        return response
 
 airia_service = AiriaService()
