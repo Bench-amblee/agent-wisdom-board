@@ -1,5 +1,6 @@
 """
 Airia service for agent orchestration and coordination
+Airia v2 API - Uses PipelineExecution endpoints
 """
 import httpx
 from typing import List, Dict, Any, Optional
@@ -13,6 +14,10 @@ class AiriaService:
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
+        # Agent pipeline IDs
+        self.sales_agent_id = settings.airia_sales_agent_id
+        self.cs_agent_id = settings.airia_cs_agent_id
+        self.research_agent_id = settings.airia_research_agent_id
 
     async def create_agent(self, name: str, role: str, instructions: str) -> Dict[str, Any]:
         """
@@ -150,5 +155,88 @@ class AiriaService:
         for resp in agent_responses:
             synthesis += f"**{resp['agent']}**: {resp['response']}\n\n"
         return synthesis
+
+    async def execute_pipeline(
+        self,
+        pipeline_id: str,
+        input_data: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Execute an Airia pipeline (agent)
+
+        Args:
+            pipeline_id: The pipeline/agent GUID
+            input_data: Input parameters for the pipeline
+
+        Returns:
+            Pipeline execution result
+        """
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.post(
+                    f"{self.base_url}/PipelineExecution/{pipeline_id}",
+                    headers=self.headers,
+                    json=input_data,
+                    timeout=60.0
+                )
+                response.raise_for_status()
+                return response.json()
+            except httpx.HTTPError as e:
+                print(f"Airia Pipeline execution error: {e}")
+                if hasattr(e, 'response') and e.response is not None:
+                    print(f"Response: {e.response.text}")
+                return {"error": str(e)}
+
+    async def execute_agent(
+        self,
+        agent_type: str,
+        question: str,
+        context: str,
+        previous_messages: Optional[List[Dict[str, str]]] = None
+    ) -> str:
+        """
+        Execute a specific agent pipeline
+
+        Args:
+            agent_type: "sales", "cs", or "research"
+            question: The question to ask
+            context: Context/data for the agent
+            previous_messages: Previous discussion messages
+
+        Returns:
+            Agent's response
+        """
+        # Select pipeline ID based on agent type
+        pipeline_map = {
+            "sales": self.sales_agent_id,
+            "cs": self.cs_agent_id,
+            "research": self.research_agent_id
+        }
+
+        pipeline_id = pipeline_map.get(agent_type)
+        if not pipeline_id:
+            return f"Error: Unknown agent type {agent_type}"
+
+        # Build input for Airia pipeline
+        input_data = {
+            "question": question,
+            "context": context
+        }
+
+        # Add previous messages if provided
+        if previous_messages:
+            input_data["previous_discussion"] = "\n\n".join([
+                f"{msg['agent']}: {msg['message']}"
+                for msg in previous_messages
+            ])
+
+        result = await self.execute_pipeline(pipeline_id, input_data)
+
+        if "error" in result:
+            return f"Error executing {agent_type} agent: {result['error']}"
+
+        # Extract response from Airia result
+        # The exact format depends on your Airia pipeline output
+        return result.get("output", result.get("response", str(result)))
 
 airia_service = AiriaService()

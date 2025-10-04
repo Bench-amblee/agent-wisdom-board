@@ -6,6 +6,10 @@ Discussion Flow:
 2. Initial Presentation - Each agent states their case
 3. Deliberation (3 rounds) - Agents respond to each other
 4. Final Synthesis - OpenAI creates comprehensive report
+
+Supports both:
+- Custom orchestration (direct OpenAI calls)
+- Airia orchestration (using Airia pipelines)
 """
 import asyncio
 from datetime import datetime
@@ -15,11 +19,14 @@ from agents.sales_agent import sales_agent
 from agents.customer_service_agent import customer_service_agent
 from agents.research_agent import research_agent
 from services.openai_service import openai_service
+from services.airia_service import airia_service
+from config import settings
 
 class DiscussionOrchestrator:
     def __init__(self):
         self.agents = [sales_agent, customer_service_agent, research_agent]
         self.deliberation_rounds = 3
+        self.use_airia = settings.use_airia_orchestration
 
     async def conduct_discussion(self, question: str) -> BoardDiscussion:
         """
@@ -156,7 +163,17 @@ class DiscussionOrchestrator:
         """Agent conducts research (gathers context)"""
         context = await agent.get_context(question if hasattr(agent, 'get_context') and callable(agent.get_context) else None)
 
-        research_prompt = f"""You are {agent.name}, conducting preliminary research for an advisory board discussion.
+        # Use Airia if enabled
+        if self.use_airia:
+            agent_type = self._get_agent_type(agent)
+            research_summary = await airia_service.execute_agent(
+                agent_type=agent_type,
+                question=f"Conduct research: {question}",
+                context=context,
+                previous_messages=None
+            )
+        else:
+            research_prompt = f"""You are {agent.name}, conducting preliminary research for an advisory board discussion.
 
 Question: {question}
 
@@ -165,11 +182,11 @@ Your available data:
 
 Provide a brief summary (2-3 sentences) of the key insights you've discovered from your research that are relevant to this question."""
 
-        research_summary = await openai_service.generate_response(
-            messages=[{"role": "user", "content": research_prompt}],
-            temperature=0.7,
-            max_tokens=300
-        )
+            research_summary = await openai_service.generate_response(
+                messages=[{"role": "user", "content": research_prompt}],
+                temperature=0.7,
+                max_tokens=300
+            )
 
         return AgentMessage(
             agent=agent.name,
@@ -350,6 +367,16 @@ Format your response as JSON with keys: summary, key_points (array), agent_metri
                 "message": msg.message,
                 "type": msg.message_type
             })
+
+    def _get_agent_type(self, agent) -> str:
+        """Get agent type identifier for Airia"""
+        if agent.name == "Sales Director":
+            return "sales"
+        elif agent.name == "Customer Success Director":
+            return "cs"
+        elif agent.name == "Research Director":
+            return "research"
+        return "unknown"
 
 # Global orchestrator instance
 orchestrator = DiscussionOrchestrator()
