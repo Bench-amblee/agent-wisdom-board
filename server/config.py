@@ -17,6 +17,15 @@ class Settings(BaseSettings):
     # Enable Airia orchestration
     use_airia_orchestration: bool = False
 
+    # Rate Limiting Configuration
+    rate_limit_window_minutes: int = 15
+    rate_limit_max_requests: int = 100
+    ai_rate_limit_max_requests: int = 10
+    max_tokens_per_request: int = 2000
+
+    # Daily Budget Limit
+    daily_budget_limit: float = 5.0
+
     model_config = SettingsConfigDict(
         env_file=str(Path(__file__).parent / ".env"),
         env_file_encoding="utf-8",

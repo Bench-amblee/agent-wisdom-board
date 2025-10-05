@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, TrendingUp, Headphones, FlaskConical } from "lucide-react";
+import { Loader2, TrendingUp, Headphones, FlaskConical, Upload, Database, Users } from "lucide-react";
 import {
   askAdvisoryBoard,
   type BoardDiscussion,
@@ -19,9 +19,9 @@ const agentConfig = {
   },
   "Customer Success Director": {
     icon: Headphones,
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/30",
+    color: "text-cyan-500",
+    bgColor: "bg-cyan-500/10",
+    borderColor: "border-cyan-500/30",
   },
   "Research Director": {
     icon: FlaskConical,
@@ -32,6 +32,7 @@ const agentConfig = {
 };
 
 export function AdvisoryBoardDemo() {
+  const [step, setStep] = useState<'question' | 'data-info'>('question');
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [discussion, setDiscussion] = useState<BoardDiscussion | null>(null);
@@ -71,14 +72,154 @@ export function AdvisoryBoardDemo() {
     }
   };
 
+
   return (
     <div className="container mx-auto p-6 max-w-6xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">AI Advisory Board</h1>
-        <p className="text-muted-foreground">
-          Ask a question and get insights from Sales, Customer Success, and Research directors
+        <div className="flex items-center gap-3 mb-2">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Users className="h-8 w-8 text-primary" />
+          </div>
+          <h1 className="text-4xl font-bold">AI Advisory Board</h1>
+        </div>
+        <p className="text-muted-foreground mb-3">
+          Get strategic insights from a panel of AI experts who analyze your data and collaborate to answer your business questions. Each director brings their specialized perspective through multi-round discussions.
         </p>
       </div>
+
+      {/* Data Info Page */}
+      {step === 'data-info' && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>Sample Dataset: Athletic Wear Ecommerce</CardTitle>
+            <CardDescription>
+              Your advisory board will analyze real sales and customer support data from an athletic wear company
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Sales Data */}
+            <div className="border-2 rounded-lg p-5 bg-blue-500/5 border-blue-500/30">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-blue-500/10">
+                  <TrendingUp className="h-6 w-6 text-blue-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">Sales Pipeline Data</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    The Sales Director will analyze opportunity progression, revenue patterns, and conversion metrics
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Stages</Badge>
+                      <span className="text-muted-foreground">SQL → Demo → Proposal → Won/Lost</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Sources</Badge>
+                      <span className="text-muted-foreground">Ads, Referrals, Affiliates</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Metrics</Badge>
+                      <span className="text-muted-foreground">Deal amounts, win/loss reasons</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Timeline</Badge>
+                      <span className="text-muted-foreground">Sep-Oct 2025</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Support Data */}
+            <div className="border-2 rounded-lg p-5 bg-cyan-500/5 border-cyan-500/30">
+              <div className="flex items-start gap-4">
+                <div className="p-3 rounded-lg bg-cyan-500/10">
+                  <Headphones className="h-6 w-6 text-cyan-500" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg mb-2">Customer Support Tickets</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    The Customer Success Director will examine support trends, resolution patterns, and customer pain points
+                  </p>
+                  <div className="grid grid-cols-2 gap-3 text-xs">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Topics</Badge>
+                      <span className="text-muted-foreground">Shipping, refunds, defects</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Status</Badge>
+                      <span className="text-muted-foreground">Open, pending, solved</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Events</Badge>
+                      <span className="text-muted-foreground">Opened, replies, escalations</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary" className="text-xs">Timeline</Badge>
+                      <span className="text-muted-foreground">Sep-Oct 2025</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
+              <p>💡 <strong>Tip:</strong> Try questions like "How can we improve customer retention?" or "What's causing deal losses?" to see how the directors collaborate using this data.</p>
+            </div>
+
+            <Button
+              onClick={() => setStep('question')}
+              className="w-full"
+              size="lg"
+            >
+              Back to Questions
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Main Question Page */}
+      {step === 'question' && (
+        <>
+          {/* Advisory Board Members Preview */}
+          {!loading && !discussion && (
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold mb-4">Your Advisory Board</h2>
+              <div className="grid grid-cols-3 gap-4">
+                <div className={`p-4 rounded-lg ${agentConfig["Sales Director"].bgColor} ${agentConfig["Sales Director"].borderColor} border`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className={`h-5 w-5 ${agentConfig["Sales Director"].color}`} />
+                    <span className={`text-sm font-medium ${agentConfig["Sales Director"].color}`}>Sales Director</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Revenue strategy and pipeline optimization</p>
+                </div>
+                <div className={`p-4 rounded-lg ${agentConfig["Customer Success Director"].bgColor} ${agentConfig["Customer Success Director"].borderColor} border`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Headphones className={`h-5 w-5 ${agentConfig["Customer Success Director"].color}`} />
+                    <span className={`text-sm font-medium ${agentConfig["Customer Success Director"].color}`}>CS Director</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Customer experience and support insights</p>
+                </div>
+                <div className={`p-4 rounded-lg ${agentConfig["Research Director"].bgColor} ${agentConfig["Research Director"].borderColor} border`}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <FlaskConical className={`h-5 w-5 ${agentConfig["Research Director"].color}`} />
+                    <span className={`text-sm font-medium ${agentConfig["Research Director"].color}`}>Research Director</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Market analysis and data-driven insights</p>
+                </div>
+              </div>
+              <div className="mt-3 text-center">
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => setStep('data-info')}
+                  className="text-xs"
+                >
+                  Learn more about the dataset →
+                </Button>
+              </div>
+            </div>
+          )}
 
         {/* Agent Status Animation */}
       {loading && (
@@ -419,6 +560,8 @@ export function AdvisoryBoardDemo() {
             </CardContent>
           </Card>
         </div>
+      )}
+        </>
       )}
     </div>
   );

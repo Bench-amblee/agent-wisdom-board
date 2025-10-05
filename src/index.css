@@ -8,53 +8,56 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 240 10% 7%;
-    --foreground: 240 5% 96%;
+    /* Executive Boardroom Theme - Cool sophisticated palette */
+    --background: 220 25% 8%;  /* Deep navy-black */
+    --foreground: 210 15% 92%;  /* Cool off-white */
 
-    --card: 240 8% 10%;
-    --card-foreground: 240 5% 96%;
+    --card: 220 20% 12%;  /* Rich dark navy card */
+    --card-foreground: 210 15% 92%;
 
-    --popover: 240 8% 12%;
-    --popover-foreground: 240 5% 96%;
+    --popover: 220 20% 14%;
+    --popover-foreground: 210 15% 92%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 240 10% 7%;
+    --primary: 142 76% 45%;  /* Vibrant green for interactions */
+    --primary-foreground: 220 25% 8%;
 
-    --secondary: 240 5% 20%;
-    --secondary-foreground: 240 5% 96%;
+    --secondary: 220 15% 22%;  /* Muted slate-blue */
+    --secondary-foreground: 210 15% 92%;
 
-    --muted: 240 5% 15%;
-    --muted-foreground: 240 5% 65%;
+    --muted: 220 15% 18%;  /* Subtle navy-gray */
+    --muted-foreground: 210 10% 68%;  /* Cool gray text */
 
-    --accent: 217 91% 60%;
-    --accent-foreground: 240 10% 7%;
+    --accent: 142 76% 45%;  /* Matching green accent */
+    --accent-foreground: 220 25% 8%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 240 5% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 15% 92%;
 
-    --border: 240 5% 20%;
-    --input: 240 5% 20%;
-    --ring: 217 91% 60%;
+    --border: 220 15% 24%;  /* Defined border with contrast */
+    --input: 220 15% 20%;
+    --ring: 142 76% 45%;  /* Green focus ring */
 
     --radius: 0.75rem;
 
-    /* Agent colors */
-    --agent-sales: 217 91% 60%;
+    /* Agent colors - Cohesive cool palette */
+    --agent-sales: 217 91% 60%;  /* Blue */
     --agent-sales-light: 217 91% 70%;
-    --agent-support: 142 76% 36%;
-    --agent-support-light: 142 76% 46%;
-    --agent-research: 271 91% 65%;
-    --agent-research-light: 271 91% 75%;
+    --agent-support: 189 85% 55%;  /* Cyan for CS Director */
+    --agent-support-light: 189 85% 65%;
+    --agent-research: 271 76% 60%;  /* Purple */
+    --agent-research-light: 271 76% 70%;
 
-    /* Gradients */
+    /* Gradients - Sophisticated overlays */
     --gradient-sales: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(217 91% 50%) 100%);
-    --gradient-support: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 76% 46%) 100%);
-    --gradient-research: linear-gradient(135deg, hsl(271 91% 65%) 0%, hsl(271 91% 55%) 100%);
-    --gradient-header: linear-gradient(90deg, hsl(240 8% 10%) 0%, hsl(240 10% 12%) 100%);
+    --gradient-support: linear-gradient(135deg, hsl(189 85% 55%) 0%, hsl(189 85% 45%) 100%);
+    --gradient-research: linear-gradient(135deg, hsl(271 76% 60%) 0%, hsl(271 76% 50%) 100%);
+    --gradient-header: linear-gradient(90deg, hsl(220 20% 12%) 0%, hsl(220 25% 14%) 100%);
+    --gradient-boardroom: linear-gradient(180deg, hsl(220 25% 8%) 0%, hsl(220 30% 10%) 50%, hsl(220 25% 8%) 100%);
 
-    /* Shadows */
-    --shadow-glow: 0 0 20px -5px;
-    --shadow-card: 0 4px 20px -4px rgba(0, 0, 0, 0.5);
+    /* Shadows - Executive depth */
+    --shadow-glow: 0 0 30px -8px;
+    --shadow-card: 0 8px 32px -8px rgba(0, 0, 0, 0.6);
+    --shadow-green: 0 4px 20px -4px rgba(34, 197, 94, 0.15);
   }
 }
 
