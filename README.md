@@ -1,184 +1,133 @@
-# Welcome to your Lovable project
+# 🎯 AI Advisory Board
 
-## Project info
+> **Built in 5 hours at the NYC AI Agents Hackathon** | **Top 5 Finish** 🏆
 
-**URL**: https://lovable.dev/projects/2408e7d0-7305-4749-a114-dc76e7fa9802
+Get strategic insights from a panel of AI experts who analyze your data and collaborate to answer your business questions. Watch as Sales, Customer Success, and Research directors engage in multi-round discussions to provide comprehensive recommendations.
 
-## How can I edit this code?
+**[🚀 Try it Live](https://ai-advisor-board.vercel.app/)**
 
-There are several ways of editing your application.
+![AI Advisory Board Demo](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
+![Built with Love](https://img.shields.io/badge/Built%20with-❤️%20in%205hrs-ff69b4?style=for-the-badge)
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/2408e7d0-7305-4749-a114-dc76e7fa9802) and start prompting.
+## 🌟 What We Built
 
-Changes made via Lovable will be committed automatically to this repo.
+An intelligent advisory board system where specialized AI agents collaborate to solve complex business problems. Each agent:
+- 🔵 **Sales Director** - Analyzes revenue patterns, pipeline health, and conversion metrics
+- 🔵 **Customer Success Director** - Examines support trends, customer pain points, and satisfaction
+- 🟣 **Research Director** - Provides market analysis and data-driven insights
 
-**Use your preferred IDE**
+### The Experience
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. **Research Phase** - Each director independently analyzes relevant data
+2. **Initial Presentations** - Directors present their findings and perspectives
+3. **Deliberation Rounds** - Agents debate, challenge assumptions, and build on each other's insights
+4. **Final Synthesis** - A comprehensive report with actionable recommendations
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🏗️ Architecture
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### Multi-Agent Orchestration
+- **Custom orchestration engine** managing deliberation rounds and consensus building
+- **Context-aware agents** with specialized domain knowledge
+- **Dynamic discussion flow** adapting based on question complexity
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Tech Stack
 
-# Step 3: Install the necessary dependencies.
-npm i
+**Frontend:**
+- ⚛️ React + TypeScript
+- 🎨 Tailwind CSS + shadcn/ui components
+- 🎭 Lucide React icons
+- ⚡ Vite for blazing-fast dev experience
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+**Backend:**
+- 🐍 FastAPI (Python)
+- 🤖 OpenAI GPT-4 for agent intelligence
+- 🔗 Airia API for advanced orchestration
+- 🔍 Linkup API for web search capabilities
+
+**Infrastructure:**
+- 🚀 Vercel (Frontend deployment)
+- 🌐 Render (Backend API)
+- 📊 Sample datasets: Athletic wear ecommerce company
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+```bash
+node >= 18
+python >= 3.10
 ```
 
-**Edit a file directly in GitHub**
+### Installation
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/agent-wisdom-board.git
+cd agent-wisdom-board
+```
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/2408e7d0-7305-4749-a114-dc76e7fa9802) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
-
-## Local backend & API keys
-
-This project includes a small Express backend proxy that lets you keep API keys out of the client.
-
-1. Copy `.env.example` to `.env` and fill in your real keys (do NOT commit `.env`).
-
-2. Install dependencies:
-
-```powershell
+2. **Install frontend dependencies**
+```bash
 npm install
 ```
 
-3. Start the backend server:
-
-```powershell
-npm run server
+3. **Install backend dependencies**
+```bash
+cd server
+pip install -r requirements.txt
 ```
 
-Or start frontend + server concurrently:
-
-```powershell
-npm run start:dev
+4. **Set up environment variables**
+```bash
+# Create server/.env file
+OPENAI_API_KEY=your_openai_key
+LINKUP_API_KEY=your_linkup_key
+AIRIA_API_KEY=your_airia_key
 ```
 
-The server exposes proxy endpoints under `/api/openai`, `/api/linkup` and `/api/airia`. The frontend helper `src/api/backendClient.ts` shows how to call them.
+5. **Run the development servers**
 
-Note on ports
---
-By default this project expects the backend (FastAPI/Express) to run on port 8000 and the Vite frontend on port 8080. The Vite dev server is configured to proxy `/api/*` to `http://localhost:8000` so you can call `/api/...` from the browser without CORS issues.
-
-Start both locally (PowerShell):
-
-```powershell
-# In one terminal: start the backend (example for FastAPI)
-uvicorn server.main:app --reload --port 8000
-
-# In another terminal: start the frontend
-
+Terminal 1 (Frontend):
+```bash
 npm run dev
 ```
 
+Terminal 2 (Backend):
+```bash
+npm run fastapi
+```
 
-
-# 🧠 NovaMart Query Pack
-
-> **NovaMart – Home Fitness Gear**  
-> Data Intelligence Layer powering our AI agents: Support, Sales, and Research.
-
----
-
-## 📦 Overview
-
-The **Query Pack** is a lightweight, pre-processed JSON layer that summarizes NovaMart’s internal data.  
-It transforms raw CSV files into structured insights that our agents can consume directly — both **locally** and in **Airia**.
-
-This allows our agents to reason faster, avoid repetitive SQL/CSV scans, and maintain a shared, consistent understanding of the company’s data.
+Visit `http://localhost:5173` to see the app!
 
 ---
 
-## 🏢 About the Company
+## 💡 Key Features
 
-**NovaMart** is a next-gen ecommerce brand focused on **AI-powered home fitness gear**.  
-We sell products like:
-- 🏋️ Smart dumbbells  
-- 🧘 AI-connected resistance bands  
-- 💪 Intelligent workout mats and recovery sensors  
+### 🎯 Smart Question Routing
+Ask any business question and watch the board automatically determine which agents should participate and how many deliberation rounds are needed.
 
-Our mission is simple:  
-> *Help people train smarter at home using adaptive AI technology.*
+### 📊 Data-Driven Insights
+Agents analyze real sales pipeline data and customer support tickets to provide grounded, actionable recommendations.
 
----
+### 🔄 Multi-Round Deliberation
+Unlike single-shot AI responses, our agents engage in back-and-forth discussions, challenging assumptions and building consensus.
 
-## ⚙️ Data Sources
+### 📝 Comprehensive Reports
+Get both a high-level summary and detailed analysis with:
+- Agent perspectives (what each director thinks)
+- Key points and takeaways
+- Prioritized recommendations
+- Full discussion transcript
 
-All analytics in this Query Pack come from NovaMart’s core operational datasets:
-
-| Dataset | File | Description |
-|----------|------|--------------|
-| **Customer Support** | `data/support.csv` | Support tickets and chat interactions about orders, returns, defects, and app issues. |
-| **Sales Pipeline** | `data/sales.csv` | Opportunities, lead sources, and win/loss outcomes from marketing channels. |
-| **Market Research** | `data/research.csv` | Aggregated web insights and trend findings from the fitness tech market. |
-
-These CSVs represent NovaMart’s internal data streams.  
-They are processed locally into a unified **`query_pack.json`** file that contains key business signals for each domain.
+### 🎨 UI/UX
+- Real-time phase indicators showing research, presentations, and deliberation
+- Animated agent status cards
+- Tabbed interface for discussion vs. summary views
+- Responsive design for all screen sizes
 
 ---
-
-## 🧩 Structure of `query_pack.json`
-
-The Query Pack summarizes data into three top-level domains:
-
-```json
-{
-  "meta": {
-    "generated_at": "2025-10-04T12:00:00Z",
-    "source": "NovaMart Home Fitness Data"
-  },
-  "support": {
-    "rising_topics": [],
-    "escalation_rate_by_topic": [],
-    "p50_tts_by_topic": []
-  },
-  "sales": {
-    "stalled_opps_gt14d": [],
-    "win_rate_by_source": []
-  },
-  "research": {
-    "top_findings": []
-  }
-}
