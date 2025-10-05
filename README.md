@@ -4,19 +4,16 @@
 
 Get strategic insights from a panel of AI experts who analyze your data and collaborate to answer your business questions. Watch as Sales, Customer Success, and Research directors engage in multi-round discussions to provide comprehensive recommendations.
 
-**[🚀 Try it Live](https://ai-advisor-board.vercel.app/)**
-
-![AI Advisory Board Demo](https://img.shields.io/badge/Status-Live-success?style=for-the-badge)
-![Built with Love](https://img.shields.io/badge/Built%20with-❤️%20in%205hrs-ff69b4?style=for-the-badge)
+**[Try it Live](https://ai-advisor-board.vercel.app/)**
 
 ---
 
-## 🌟 What We Built
+## Overview
 
 An intelligent advisory board system where specialized AI agents collaborate to solve complex business problems. Each agent:
-- 🔵 **Sales Director** - Analyzes revenue patterns, pipeline health, and conversion metrics
-- 🔵 **Customer Success Director** - Examines support trends, customer pain points, and satisfaction
-- 🟣 **Research Director** - Provides market analysis and data-driven insights
+- **Sales Director** - Analyzes revenue patterns, pipeline health, and conversion metrics
+- **Customer Success Director** - Examines support trends, customer pain points, and satisfaction
+- **Research Director** - Provides market analysis and data-driven insights
 
 ### The Experience
 
@@ -27,7 +24,7 @@ An intelligent advisory board system where specialized AI agents collaborate to 
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Multi-Agent Orchestration
 - **Custom orchestration engine** managing deliberation rounds and consensus building
