@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <!-- Background - Executive boardroom theme -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:hsl(220, 25%, 8%);stop-opacity:1" />
+      <stop offset="50%" style="stop-color:hsl(220, 30%, 10%);stop-opacity:1" />
+      <stop offset="100%" style="stop-color:hsl(220, 25%, 8%);stop-opacity:1" />
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+
+  <!-- Large centered icon circle background -->
+  <circle cx="600" cy="315" r="200" fill="hsl(142, 76%, 45%)" opacity="0.2"/>
+
+  <!-- Users icon (centered and larger) -->
+  <g transform="translate(600, 315) scale(2.5)" fill="hsl(142, 76%, 45%)" filter="url(#glow)">
+    <!-- Left person -->
+    <circle cx="-30" cy="-15" r="20"/>
+    <path d="M -30,-5 C -45,-5 -50,10 -50,30 L -10,30 C -10,10 -15,-5 -30,-5 Z"/>
+
+    <!-- Right person -->
+    <circle cx="30" cy="-15" r="20"/>
+    <path d="M 30,-5 C 15,-5 10,10 10,30 L 50,30 C 50,10 45,-5 30,-5 Z"/>
+
+    <!-- Center person (slightly larger) -->
+    <circle cx="0" cy="-25" r="24"/>
+    <path d="M 0,-10 C -18,-10 -25,8 -25,35 L 25,35 C 25,8 18,-10 0,-10 Z"/>
+  </g>
+</svg>
